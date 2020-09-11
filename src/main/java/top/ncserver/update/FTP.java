@@ -155,8 +155,6 @@ public class FTP {
             //获取指定目录下文件文件对象集合
             FTPFile files[] = ftp.listFiles();
             logger.info(files.length);
-            InputStream in = null;
-            BufferedReader reader = null;
             for (FTPFile file : files) {
                 String fileName = file.getName();
                 if(file.isFile()){
@@ -177,6 +175,40 @@ public class FTP {
         }
 
         return flage;
+
+    }
+    /**
+     * 检测服务器当前周目
+     * @param ftp FTPClient对象
+     * @return 最新版本号
+     */
+    public static int check_version(FTPClient ftp) {
+        String folderPath ="";
+
+
+       int vsersion = 0;
+       try {
+           ftp.changeWorkingDirectory(new String(folderPath.getBytes("UTF-8"),"iso-8859-1"));
+           //设置FTP连接模式
+           ftp.enterLocalPassiveMode();
+           FTPFile files[] = ftp.listFiles();
+           for (FTPFile file : files) {
+               String fileName = file.getName();
+               if(file.isDirectory()){
+
+
+                       //else
+                       //logger.info(fileName);
+
+                   }
+               }
+
+       }catch (Exception e)
+       {
+           e.printStackTrace();
+           logger.error("检测服务器当前周目失败");
+       }
+       return vsersion;
 
     }
 
