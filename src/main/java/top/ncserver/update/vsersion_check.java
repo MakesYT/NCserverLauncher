@@ -22,9 +22,5 @@ public class vsersion_check {
                 new FileInputStream(client)); // 建立一个输入流对象reader
         BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
          client_version = br.readLine();
-         FTP.logger.info(client_version);
-
-
-
     }
 }

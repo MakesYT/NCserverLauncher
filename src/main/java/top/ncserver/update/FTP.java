@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 public class FTP {
     public static final Logger logger = Logger.getLogger(FTP.class);
-
+    public static String[] update_backpack=new String[30];
     /**
      * 获取FTPClient对象
      * @param ftpHost 服务器IP
@@ -159,7 +159,7 @@ public class FTP {
 
                     if (fileName.indexOf("_to_") == -1){}
                     else
-                    {i++;}
+                    {update_backpack[i]=fileName;i++;}
 
                 }
             }
