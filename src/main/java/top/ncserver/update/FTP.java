@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 
 public class FTP {
-    private static final Logger logger = Logger.getLogger(FTP.class);
+    public static final Logger logger = Logger.getLogger(FTP.class);
 
     /**
      * 获取FTPClient对象
@@ -140,10 +140,11 @@ public class FTP {
      * @param ftp FTPClient对象
      * @return
      */
-    public static boolean readFileByFolder(FTPClient ftp, String folderPath){
-        boolean flage = false;
+    public static int readFileByFolder(FTPClient ftp, String folderPath){
+        int i=0;
         logger.info(folderPath);
         try {
+
             ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
             //设置FTP连接模式
             ftp.enterLocalPassiveMode();
@@ -158,7 +159,8 @@ public class FTP {
 
                     if (fileName.indexOf("_to_") == -1){}
                     else
-                        logger.info(fileName);
+                    {i++;}
+
                 }
             }
         } catch (Exception e) {
@@ -166,7 +168,7 @@ public class FTP {
             logger.error("文件解析失败");
         }
 
-        return flage;
+        return i;
 
     }
     /**
