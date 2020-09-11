@@ -48,7 +48,7 @@ public class FTP {
             // 设置连接超时时间,5000毫秒
             ftp.setConnectTimeout(50000);
             // 设置中文编码集，防止中文乱码
-            ftp.setControlEncoding("UTF-8");
+            ftp.setControlEncoding("GBK");
             if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
                 logger.info("未连接到FTP，用户名或密码错误");
                 ftp.disconnect();
@@ -139,183 +139,6 @@ public class FTP {
         return flag;
     }
 
-    /**
-     * FTP文件上传工具类
-     * @param ftp
-     * @param filePath
-     * @param ftpPath
-     * @return
-     */
-    public boolean uploadFile(FTPClient ftp,String filePath,String ftpPath){
-        boolean flag = false;
-        InputStream in = null;
-        try {
-            // 设置PassiveMode传输
-            ftp.enterLocalPassiveMode();
-            //设置二进制传输，使用BINARY_FILE_TYPE，ASC容易造成文件损坏
-            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
-            //判断FPT目标文件夹时候存在不存在则创建
-            if(!ftp.changeWorkingDirectory(ftpPath)){
-                ftp.makeDirectory(ftpPath);
-            }
-            //跳转目标目录
-            ftp.changeWorkingDirectory(ftpPath);
-
-            //上传文件
-            File file = new File(filePath);
-            in = new FileInputStream(file);
-            String tempName = ftpPath+File.separator+file.getName();
-            flag = ftp.storeFile(new String (tempName.getBytes("UTF-8"),"ISO-8859-1"),in);
-            if(flag){
-                logger.info("上传成功");
-            }else{
-                logger.error("上传失败");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("上传失败");
-        }finally{
-            try {
-                in.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return flag;
-    }
-
-    /**
-     * FPT上文件的复制
-     * @param ftp  FTPClient对象
-     * @param olePath 原文件地址
-     * @param newPath 新保存地址
-     * @param fileName 文件名
-     * @return
-     */
-    public boolean copyFile(FTPClient ftp, String olePath, String newPath,String fileName) {
-        boolean flag = false;
-
-        try {
-            // 跳转到文件目录
-            ftp.changeWorkingDirectory(olePath);
-            //设置连接模式，不设置会获取为空
-            ftp.enterLocalPassiveMode();
-            // 获取目录下文件集合
-            FTPFile[] files = ftp.listFiles();
-            ByteArrayInputStream  in = null;
-            ByteArrayOutputStream out = null;
-            for (FTPFile file : files) {
-                // 取得指定文件并下载
-                if (file.getName().equals(fileName)) {
-
-                    //读取文件，使用下载文件的方法把文件写入内存,绑定到out流上
-                    out = new ByteArrayOutputStream();
-                    ftp.retrieveFile(new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"), out);
-                    in = new ByteArrayInputStream(out.toByteArray());
-                    //创建新目录
-                    ftp.makeDirectory(newPath);
-                    //文件复制，先读，再写
-                    //二进制
-                    ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
-                    flag = ftp.storeFile(newPath+File.separator+(new String(file.getName().getBytes("UTF-8"),"ISO-8859-1")),in);
-                    out.flush();
-                    out.close();
-                    in.close();
-                    if(flag){
-                        logger.info("转存成功");
-                    }else{
-                        logger.error("复制失败");
-                    }
-
-
-                }
-            }
-        } catch (Exception e) {
-            logger.error("复制失败");
-        }
-        return flag;
-    }
-
-    /**
-     * 实现文件的移动，这里做的是一个文件夹下的所有内容移动到新的文件，
-     * 如果要做指定文件移动，加个判断判断文件名
-     * 如果不需要移动，只是需要文件重命名，可以使用ftp.rename(oleName,newName)
-     * @param ftp
-     * @param oldPath
-     * @param newPath
-     * @return
-     */
-    public boolean moveFile(FTPClient ftp,String oldPath,String newPath){
-        boolean flag = false;
-
-        try {
-            ftp.changeWorkingDirectory(oldPath);
-            ftp.enterLocalPassiveMode();
-            //获取文件数组
-            FTPFile[] files = ftp.listFiles();
-            //新文件夹不存在则创建
-            if(!ftp.changeWorkingDirectory(newPath)){
-                ftp.makeDirectory(newPath);
-            }
-            //回到原有工作目录
-            ftp.changeWorkingDirectory(oldPath);
-            for (FTPFile file : files) {
-
-                //转存目录
-                flag = ftp.rename(new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"), newPath+File.separator+new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"));
-                if(flag){
-                    logger.info(file.getName()+"移动成功");
-                }else{
-                    logger.error(file.getName()+"移动失败");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("移动文件失败");
-        }
-        return flag;
-    }
-
-    /**
-     * 删除FTP上指定文件夹下文件及其子文件方法，添加了对中文目录的支持
-     * @param ftp FTPClient对象
-     * @param FtpFolder 需要删除的文件夹
-     * @return
-     */
-    public boolean deleteByFolder(FTPClient ftp,String FtpFolder){
-        boolean flag = false;
-        try {
-            ftp.changeWorkingDirectory(new String(FtpFolder.getBytes("UTF-8"),"ISO-8859-1"));
-            ftp.enterLocalPassiveMode();
-            FTPFile[] files = ftp.listFiles();
-            for (FTPFile file : files) {
-                //判断为文件则删除
-                if(file.isFile()){
-                    ftp.deleteFile(new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"));
-                }
-                //判断是文件夹
-                if(file.isDirectory()){
-                    String childPath = FtpFolder + File.separator+file.getName();
-                    //递归删除子文件夹
-                    deleteByFolder(ftp,childPath);
-                }
-            }
-            //循环完成后删除文件夹
-            flag = ftp.removeDirectory(new String(FtpFolder.getBytes("UTF-8"),"ISO-8859-1"));
-            if(flag){
-                logger.info(FtpFolder+"文件夹删除成功");
-            }else{
-                logger.error(FtpFolder+"文件夹删除成功");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("删除失败");
-        }
-        return flag;
-
-    }
 
     /**
      * 遍历解析文件夹下所有文件
@@ -326,7 +149,7 @@ public class FTP {
     public static boolean readFileByFolder(FTPClient ftp, String folderPath){
         boolean flage = false;
         try {
-            ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
+            ftp.changeWorkingDirectory(new String(folderPath.getBytes("UTF-8"),"iso-8859-1"));
             //设置FTP连接模式
             ftp.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
@@ -335,13 +158,17 @@ public class FTP {
             InputStream in = null;
             BufferedReader reader = null;
             for (FTPFile file : files) {
-
+                String fileName = file.getName();
                 if(file.isFile()){
-                    String fileName = file.getName();
+
+                    logger.info(fileName);
 
                     if (fileName.indexOf("_to_") == -1){}
                     else
                         logger.info(fileName);
+                }
+                if(file.isDirectory()){
+                    logger.info(fileName);
                 }
             }
         } catch (Exception e) {
