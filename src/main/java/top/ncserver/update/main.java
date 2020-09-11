@@ -1,7 +1,4 @@
 package top.ncserver.update;
-
-import org.apache.commons.net.ftp.FTPClient;
-
 import java.io.FileNotFoundException;
 
 

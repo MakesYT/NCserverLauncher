@@ -9,10 +9,8 @@ public class vsersion_check {
 
         File f = new File("version.txt");
         FileOutputStream fop = new FileOutputStream(f);
-
         FTP test = new FTP();
         FTPClient ftp =FTP.getFTPClient("192.168.2.28",21,"update","n~7z26");
-
         FTP.readFileByFolder(ftp, FTP.check_Weeks_orders(ftp)+"周目/");
 
     }
