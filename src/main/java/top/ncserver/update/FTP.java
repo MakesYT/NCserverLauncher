@@ -1,14 +1,8 @@
 package top.ncserver.update;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.SocketException;
 
@@ -148,25 +142,23 @@ public class FTP {
      */
     public static boolean readFileByFolder(FTPClient ftp, String folderPath){
         boolean flage = false;
+        logger.info(folderPath);
         try {
-            ftp.changeWorkingDirectory(new String(folderPath.getBytes("UTF-8"),"iso-8859-1"));
+            ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
             //设置FTP连接模式
             ftp.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
             FTPFile files[] = ftp.listFiles();
             logger.info(files.length);
-            for (FTPFile file : files) {
-                String fileName = file.getName();
-                if(file.isFile()){
 
-                    logger.info(fileName);
+            for (FTPFile file : files) {
+
+                if(file.isFile()){
+                    String fileName = file.getName();
 
                     if (fileName.indexOf("_to_") == -1){}
                     else
                         logger.info(fileName);
-                }
-                if(file.isDirectory()){
-                    logger.info(fileName);
                 }
             }
         } catch (Exception e) {
@@ -180,36 +172,33 @@ public class FTP {
     /**
      * 检测服务器当前周目
      * @param ftp FTPClient对象
-     * @return 最新版本号
      */
-    public static int check_version(FTPClient ftp) {
+    public static String check_Weeks_orders(FTPClient ftp) {
         String folderPath ="";
 
-
-       int vsersion = 0;
        try {
            ftp.changeWorkingDirectory(new String(folderPath.getBytes("UTF-8"),"iso-8859-1"));
            //设置FTP连接模式
            ftp.enterLocalPassiveMode();
            FTPFile files[] = ftp.listFiles();
            for (FTPFile file : files) {
-               String fileName = file.getName();
-               if(file.isDirectory()){
-
-
-                       //else
-                       //logger.info(fileName);
-
+               //判断为txt文件则解析
+               if(file.isFile()){
+                   String fileName = file.getName();
+                   if(fileName.endsWith(".txt")){
+                    return fileName.substring(0,fileName.length()-4);
                    }
                }
+
+           }
+
 
        }catch (Exception e)
        {
            e.printStackTrace();
            logger.error("检测服务器当前周目失败");
        }
-       return vsersion;
-
+        return null;
     }
 
 }
