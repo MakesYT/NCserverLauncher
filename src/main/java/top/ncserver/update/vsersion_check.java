@@ -6,16 +6,17 @@ import java.io.*;
 
 public class vsersion_check {
     public static String client_version;
+    public static String server_version;
     public static void check() throws IOException {
         FTP test = new FTP();
         FTPClient ftp =FTP.getFTPClient("192.168.2.28",21,"update","n~7z26");
-        String Weeks_orders=FTP.check_Weeks_orders(ftp);
-        FTP.readFileByFolder(ftp, Weeks_orders+"周目/");
+        server_version=FTP.check_Weeks_orders(ftp);
+        FTP.readFileByFolder(ftp, server_version.charAt(0)+"周目/");
         File client=new File("version.txt");
         if(!client.exists())
             {
             FileWriter writer =new FileWriter("version.txt");
-            writer.write("V"+Weeks_orders+".0.0");
+            writer.write("V"+server_version.charAt(0)+".0.0");
             writer.close();
             }
         InputStreamReader reader = new InputStreamReader(
