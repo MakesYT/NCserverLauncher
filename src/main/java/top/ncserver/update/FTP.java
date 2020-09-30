@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 /**
  * 简单操作FTP工具类 ,此工具类支持中文文件名，不支持中文目录
  * 如果需要支持中文目录，需要 new String(path.getBytes("UTF-8"),"ISO-8859-1") 对目录进行转码
- * @author WZH
+ *
  *
  */
 
@@ -61,12 +61,13 @@ public class FTP {
     }
 
 
+
     /**
      * 关闭FTP方法
      * @param ftp
-     * @return
+     * @return boolean
      */
-    public boolean closeFTP(FTPClient ftp){
+    public static boolean closeFTP(FTPClient ftp){
 
         try {
             ftp.logout();
@@ -93,7 +94,7 @@ public class FTP {
      * @param filePath FTP文件路径
      * @param fileName 文件名
      * @param downPath 下载保存的目录
-     * @return
+     * @return boolean
      */
     public boolean downLoadFTP(FTPClient ftp, String filePath, String fileName,
                                String downPath) {
@@ -136,39 +137,32 @@ public class FTP {
 
     /**
      * 遍历解析文件夹下所有文件
-     * @param folderPath 需要解析的的文件夹
      * @param ftp FTPClient对象
-     * @return
+     * @param folderPath 需要解析的的文件夹
      */
-    public static int readFileByFolder(FTPClient ftp, String folderPath){
+    public static void readFileByFolder(FTPClient ftp, String folderPath){
         int i=0;
         logger.info(folderPath);
         try {
-
             ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
             //设置FTP连接模式
             ftp.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
-            FTPFile files[] = ftp.listFiles();
+            FTPFile[] files = ftp.listFiles();
             logger.info(files.length);
 
             for (FTPFile file : files) {
 
                 if(file.isFile()){
                     String fileName = file.getName();
-
-                    if (fileName.indexOf("_to_") == -1){}
-                    else
-                    {update_backpack[i]=fileName;i++;}
-
+                    if (fileName.matches("(.*)_to_(.*)"))
+                    {update_backpack[i]=fileName;i++;logger.info(fileName);}
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("文件解析失败");
         }
-
-        return i;
 
     }
     /**
@@ -182,7 +176,7 @@ public class FTP {
            ftp.changeWorkingDirectory(new String(folderPath.getBytes("UTF-8"),"iso-8859-1"));
            //设置FTP连接模式
            ftp.enterLocalPassiveMode();
-           FTPFile files[] = ftp.listFiles();
+           FTPFile[] files = ftp.listFiles();
            for (FTPFile file : files) {
                //判断为txt文件则解析
                if(file.isFile()){

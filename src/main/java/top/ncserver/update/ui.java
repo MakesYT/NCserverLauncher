@@ -1,13 +1,15 @@
 package top.ncserver.update;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class ui {
+    public static final Logger logger = Logger.getLogger(ui.class);
     public static JFrame main = new JFrame("Ncharge更新器");
-    public static void Init_ui()
-    {
-
+    public static void Init_ui() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         Point point = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         main.setSize((int) (point.x/1.75), (int) (point.x/1.75*0.618));
         main.setLocationRelativeTo(null);
