@@ -12,7 +12,7 @@ public class vsersion_check {
     //public static FTP test = new FTP();
     public static boolean check() throws IOException {
 
-        FTPClient ftp =FTP.getFTPClient("192.168.2.28",21,"update","n~7z26");
+        FTPClient ftp =FTP.getFTPClient("nas.ncserver.top",21,"update","n~7z26");
         server_version=FTP.check_Weeks_orders(ftp);
         assert server_version != null;
         FTP.readFileByFolder(ftp, server_version.charAt(0)+"周目/");
