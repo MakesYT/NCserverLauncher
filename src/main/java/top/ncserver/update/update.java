@@ -24,27 +24,27 @@ public class update {
        // logger.info(FTP.update_backpack[0]);
         File directory = new File("");
         while (!vsersion_check.client_version.equals("V" + vsersion_check.server_version))
-        for (int i=0;i<=FTP.update_backpack_size-1;i++)
+        for (int i = 0; i<= FTPClient.update_backpack_size-1; i++)
         {
             //logger.info(FTP.update_backpack[i].indexOf(vsersion_check.client_version));
-        if (FTP.update_backpack[i].indexOf(vsersion_check.client_version)==0)
+        if (FTPClient.update_backpack[i].indexOf(vsersion_check.client_version)==0)
         {
             //logger.info(directory.getAbsolutePath());
-            String flag=FTP.downFile(FTP.ftp, vsersion_check.server_version.charAt(0) + "周目/",
-                FTP.update_backpack[i], directory.getAbsolutePath() );
+            String flag= FTPClient.downFile(FTPClient.ftpClient, vsersion_check.server_version.charAt(0) + "周目/",
+                FTPClient.update_backpack[i], directory.getAbsolutePath() );
             if(flag.equals("下载成功 ！"))
             {
-                if (zip.decompressZip(directory.getAbsolutePath()+"/"+FTP.update_backpack[i], directory.getAbsolutePath()+"/"))
+                if (zip.decompressZip(directory.getAbsolutePath()+"/"+ FTPClient.update_backpack[i], directory.getAbsolutePath()+"/"))
                 {
-            logger.info(FTP.update_backpack[i].substring(FTP.update_backpack[i].indexOf("_to_")+4,
-                    FTP.update_backpack[i].indexOf(".zip")));
+            logger.info(FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_")+4,
+                    FTPClient.update_backpack[i].indexOf(".zip")));
             FileWriter writer =new FileWriter("version.txt");
-            writer.write(FTP.update_backpack[i].substring(FTP.update_backpack[i].indexOf("_to_")+4,
-                    FTP.update_backpack[i].indexOf(".zip")));
+            writer.write(FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_")+4,
+                    FTPClient.update_backpack[i].indexOf(".zip")));
             writer.close();
             vsersion_check.client_version=
-                    FTP.update_backpack[i].substring(FTP.update_backpack[i].indexOf("_to_")+5,
-                    FTP.update_backpack[i].indexOf(".zip"));
+                    FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_")+5,
+                    FTPClient.update_backpack[i].indexOf(".zip"));
             reload();}}
             else{
                 logger.info(flag);

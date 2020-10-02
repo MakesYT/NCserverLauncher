@@ -1,6 +1,5 @@
 package top.ncserver.update;
 
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -12,10 +11,10 @@ public class vsersion_check {
     //public static FTP test = new FTP();
     public static boolean check() throws IOException {
 
-        FTPClient ftp =FTP.getFTPClient("nas.ncserver.top",21,"update","n~7z26");
-        server_version=FTP.check_Weeks_orders(ftp);
+        org.apache.commons.net.ftp.FTPClient ftpClient = FTPClient.getFTPClient("nas.ncserver.top",21,"update","n~7z26");
+        server_version= FTPClient.check_Weeks_orders(ftpClient);
         assert server_version != null;
-        FTP.readFileByFolder(ftp, server_version.charAt(0)+"周目/");
+        FTPClient.readFileByFolder(ftpClient, server_version.charAt(0)+"周目/");
         File client=new File("version.txt");
         if(!client.exists())
             {

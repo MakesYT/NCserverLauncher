@@ -6,12 +6,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.SocketException;
 
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
-import org.apache.log4j.Logger;
+import org.apache.commons.net.ftp.*;
 
-import javax.swing.*;
+import org.apache.log4j.Logger;
 
 /**
  * 简单操作FTP工具类 ,此工具类支持中文文件名，不支持中文目录
@@ -20,9 +17,9 @@ import javax.swing.*;
  *
  */
 
-public class FTP {
-    public static FTPClient ftp = null;
-    public static final Logger logger = Logger.getLogger(FTP.class);
+public class FTPClient {
+    public static org.apache.commons.net.ftp.FTPClient ftpClient = null;
+    public static final Logger logger = Logger.getLogger(FTPClient.class);
     public static String[] update_backpack=new String[30];
     public static int update_backpack_size=0;
     /**
@@ -33,23 +30,24 @@ public class FTP {
      * @param ftpPassword 密码
      * @return FTPClient
      */
-    public static FTPClient getFTPClient(String ftpHost, int ftpPort,
-                                         String ftpUserName, String ftpPassword) {
+    public static org.apache.commons.net.ftp.FTPClient getFTPClient(String ftpHost, int ftpPort,
+                                                                    String ftpUserName, String ftpPassword) {
 
 
         try {
-            ftp = new FTPClient();
+            ftpClient = new org.apache.commons.net.ftp.FTPClient();
             // 连接FPT服务器,设置IP及端口
-            ftp.connect(ftpHost, ftpPort);
+            ftpClient.connect(ftpHost, ftpPort);
             // 设置用户名和密码
-            ftp.login(ftpUserName, ftpPassword);
+            ftpClient.login(ftpUserName, ftpPassword);
             // 设置连接超时时间,5000毫秒
-            ftp.setConnectTimeout(50000);
+            ftpClient.setConnectTimeout(50000);
             // 设置中文编码集，防止中文乱码
-            ftp.setControlEncoding("GBK");
-            if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpClient.setControlEncoding("GBK");
+            if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
                 logger.info("未连接到FTP，用户名或密码错误");
-                ftp.disconnect();
+                ftpClient.disconnect();
             } else {
                 logger.info("FTP连接成功");
             }
@@ -61,26 +59,26 @@ public class FTP {
             e.printStackTrace();
             logger.info("FTP的端口错误,请正确配置");
         }
-        return ftp;
+        return ftpClient;
     }
 
 
 
     /**
      * 关闭FTP方法
-     * @param ftp
+     * @param ftpClient
      * @return boolean
      */
-    public static boolean closeFTP(FTPClient ftp){
+    public static boolean closeFTP(org.apache.commons.net.ftp.FTPClient ftpClient){
 
         try {
-            ftp.logout();
+            ftpClient.logout();
         } catch (Exception e) {
             logger.error("FTP关闭失败");
         }finally{
-            if (ftp.isConnected()) {
+            if (ftpClient.isConnected()) {
                 try {
-                    ftp.disconnect();
+                    ftpClient.disconnect();
                 } catch (IOException ioe) {
                     logger.error("FTP关闭失败");
                 }
@@ -95,25 +93,25 @@ public class FTP {
 
     /**
      * 从FTP服务器下载文件
-     * @param ftp
+     * @param ftpClient
      * @param remotePath FTP服务器上的相对路径
      * @param fileName 要下载的文件名
      * @param localPath 下载后保存到本地的路径
      * @return
      */
-    public static String downFile(FTPClient ftp,
-                                  String remotePath,String fileName,String localPath) {
+    public static String downFile(org.apache.commons.net.ftp.FTPClient ftpClient,
+                                  String remotePath, String fileName, String localPath) {
 
         String result = "下载失败 ！";
         try {
-            ftp.changeWorkingDirectory(remotePath); // 转移到FTP服务器目录
-            FTPFile[] fs = ftp.listFiles();
+            ftpClient.changeWorkingDirectory(remotePath); // 转移到FTP服务器目录
+            FTPFile[] fs = ftpClient.listFiles();
             boolean flag = false; // 下载文件不存在
             for(FTPFile ff:fs){
                 if(ff.getName().equals(fileName)){
                     File localFile = new File(localPath+"/"+ff.getName());
                     OutputStream is = new FileOutputStream(localFile);
-                    ftp.retrieveFile(ff.getName(), is);
+                    ftpClient.retrieveFile(ff.getName(), is);
                     is.close();
                     flag = true;
                 }
@@ -128,7 +126,7 @@ public class FTP {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (ftp.isConnected()) {
+            if (ftpClient.isConnected()) {
                 //ftp.disconnect();
             }
         }
@@ -138,18 +136,18 @@ public class FTP {
 
     /**
      * 遍历解析文件夹下所有文件
-     * @param ftp FTPClient对象
+     * @param ftpClient FTPClient对象
      * @param folderPath 需要解析的的文件夹
      */
-    public static void readFileByFolder(FTPClient ftp, String folderPath){
+    public static void readFileByFolder(org.apache.commons.net.ftp.FTPClient ftpClient, String folderPath){
         int i=0;
         logger.info(folderPath);
         try {
-            ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
+            ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"ISO-8859-1"));
             //设置FTP连接模式
-            ftp.enterLocalPassiveMode();
+            ftpClient.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
-            FTPFile[] files = ftp.listFiles();
+            FTPFile[] files = ftpClient.listFiles();
             logger.info(files.length);
 
             for (FTPFile file : files) {
@@ -168,16 +166,16 @@ public class FTP {
     }
     /**
      * 检测服务器当前周目
-     * @param ftp FTPClient对象
+     * @param ftpClient FTPClient对象
      */
-    public static String check_Weeks_orders(FTPClient ftp) {
+    public static String check_Weeks_orders(org.apache.commons.net.ftp.FTPClient ftpClient) {
         String folderPath ="";
 
        try {
-           ftp.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"iso-8859-1"));
+           ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"),"iso-8859-1"));
            //设置FTP连接模式
-           ftp.enterLocalPassiveMode();
-           FTPFile[] files = ftp.listFiles();
+           ftpClient.enterLocalPassiveMode();
+           FTPFile[] files = ftpClient.listFiles();
            for (FTPFile file : files) {
                //判断为txt文件则解析
                if(file.isFile()){
