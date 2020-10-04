@@ -24,6 +24,7 @@ public class main {
                 if (vsersion_check.check())
                     logger.info("更新完成");
                 JOptionPane.showMessageDialog(null, "更新完成!当前版本：" + vsersion_check.client_version);
+
                 System.exit(0);
             }
         }

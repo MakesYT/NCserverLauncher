@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.SocketException;
 
 import org.apache.commons.net.ftp.*;
@@ -16,11 +17,37 @@ import org.apache.log4j.Logger;
  */
 
 public class FTPClient {
+
     public static org.apache.commons.net.ftp.FTPClient ftpClient = null;
     public static final Logger logger = Logger.getLogger(FTPClient.class);
     public static String[] update_backpack = new String[30];
     public static int update_backpack_size = 0;
 
+
+    public static String getPrintSize(long size) {
+        // 如果字节数少于1024，则直接以B为单位，否则先除于1024，后3位因太少无意义
+        double value = (double) size;
+        if (value < 1024) {
+            return String.valueOf(value) + "B";
+        } else {
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        }
+        // 如果原字节数除于1024之后，少于1024，则可以直接以KB作为单位
+        // 因为还没有到达要使用另一个单位的时候
+        // 接下去以此类推
+        if (value < 1024) {
+            return String.valueOf(value) + "KB";
+        } else {
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        }
+        if (value < 1024) {
+            return String.valueOf(value) + "MB";
+        } else {
+            // 否则如果要以GB为单位的，先除于1024再作同样的处理
+            value = new BigDecimal(value / 1024).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+            return String.valueOf(value) + "GB";
+        }
+    }
     /**
      * 获取FTPClient对象
      *
@@ -99,6 +126,7 @@ public class FTPClient {
      * @param localPath  下载后保存到本地的路径
      * @return
      */
+
     public static String downFile(org.apache.commons.net.ftp.FTPClient ftpClient,
                                   String remotePath, String fileName, String localPath) {
 
@@ -111,9 +139,14 @@ public class FTPClient {
                 if (ff.getName().equals(fileName)) {
                     File localFile = new File(localPath + "/" + ff.getName());
                     OutputStream is = new FileOutputStream(localFile);
+                    logger.info("下载开始,文件："+fileName+" 大小："+getPrintSize(ff.getSize()));
+                    progress_bar bar=new progress_bar(getPrintSize(ff.getSize()),fileName);
+                    new Thread(bar).start();
                     ftpClient.retrieveFile(ff.getName(), is);
+                    new Thread(bar).stop();
                     is.close();
                     flag = true;
+
                 }
             }
             //ftp.logout();

@@ -24,6 +24,7 @@ public class ex_client {
             String flag = FTPClient.downFile(ftpClient, server_version.charAt(0) + "周目/",
                     "V" + server_version + ".zip", directory.getAbsolutePath());
             if (flag.equals("下载成功 ！")) {
+
                 JOptionPane.showMessageDialog(null, "下载完成，开始解压");
                 if (zip.decompressZip(directory.getAbsolutePath() + "/" + "V" + server_version + ".zip", directory.getAbsolutePath() + "/")) {
 
