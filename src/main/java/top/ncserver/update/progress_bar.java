@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.text.NumberFormat;
 
 import static java.lang.Math.abs;
 
@@ -14,9 +15,15 @@ public class progress_bar implements Runnable{
     private String filename;
     private long size1;
     File directory ;
+    String percent;
+    // 创建一个数值格式化对象
+    NumberFormat numberFormat = NumberFormat.getInstance();
+    // 设置精确到小数点后2位
     public progress_bar(String printSize,String name,long size) {
        filesize=printSize;
        //filename=name;
+        // 创建一个数值格式化对象
+
         size1=size;
        directory = new File(name);
     }
@@ -24,6 +31,7 @@ public class progress_bar implements Runnable{
     @Override
     public void run() {
         try {
+
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -35,19 +43,21 @@ public class progress_bar implements Runnable{
         bar.setResizable(false);
         bar.setVisible(true);
 
-        JLabel bar_ = new JLabel(FTPClient.getPrintSize(directory.length())+"/"+filesize);
+        JLabel bar_ = new JLabel("");
         Font font=new Font("宋体",Font.BOLD,20);
         bar_.setFont(font);
         bar.add(bar_);
         logger.info(filename);
-    while (abs(size1-directory.length())>=1000)
+    while (abs(size1-directory.length())>=100)
     {
 
         try {
-            logger.info(FTPClient.getPrintSize(directory.length()));
-            bar_.setText(FTPClient.getPrintSize(directory.length())+"/"+filesize);
+            numberFormat.setMaximumFractionDigits(2);
+            percent=numberFormat.format((double) directory.length()/(double)size1*100);
+            logger.info(FTPClient.getPrintSize(directory.length())+"  "+percent+"%");
+            bar_.setText(FTPClient.getPrintSize(directory.length())+"/"+filesize+"  "+percent+"%");
             bar.add(bar_);
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
