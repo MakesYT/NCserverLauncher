@@ -6,14 +6,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+import static java.lang.Math.abs;
+
 public class progress_bar implements Runnable{
     public static final Logger logger = Logger.getLogger(progress_bar.class);
     private String filesize;
     private String filename;
+    private long size1;
     File directory ;
-    public progress_bar(String printSize,String name) {
+    public progress_bar(String printSize,String name,long size) {
        filesize=printSize;
        //filename=name;
+        size1=size;
        directory = new File(name);
     }
 
@@ -36,17 +40,19 @@ public class progress_bar implements Runnable{
         bar_.setFont(font);
         bar.add(bar_);
         logger.info(filename);
-    while (true)
+    while (abs(size1-directory.length())>=1000)
     {
-        try {
 
+        try {
+            logger.info(FTPClient.getPrintSize(directory.length()));
+            bar_.setText(FTPClient.getPrintSize(directory.length())+"/"+filesize);
+            bar.add(bar_);
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info(FTPClient.getPrintSize(directory.length()));
-        bar_.setText(FTPClient.getPrintSize(directory.length())+"/"+filesize);
-        bar.add(bar_);
+
     }
+        bar.setVisible(false);
     }
 }

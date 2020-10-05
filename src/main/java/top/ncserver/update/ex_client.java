@@ -27,7 +27,7 @@ public class ex_client {
 
                 JOptionPane.showMessageDialog(null, "下载完成，开始解压");
                 if (zip.decompressZip(directory.getAbsolutePath() + "/" + "V" + server_version + ".zip", directory.getAbsolutePath() + "/")) {
-
+                    zip.logger.info("解压完成");
                     JOptionPane.showMessageDialog(null, "解压完成，客户端安装成功");
                     File client=new File("version.txt");
                     if(!client.exists())
@@ -38,6 +38,7 @@ public class ex_client {
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
+                    logger.error("解压失败");
                     System.exit(0);
                 }
             } else {

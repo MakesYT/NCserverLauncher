@@ -140,9 +140,10 @@ public class FTPClient {
                     File localFile = new File(localPath + "/" + ff.getName());
                     OutputStream is = new FileOutputStream(localFile);
                     logger.info("下载开始,文件："+fileName+" 大小："+getPrintSize(ff.getSize()));
-                    progress_bar bar=new progress_bar(getPrintSize(ff.getSize()),fileName);
+                    progress_bar bar=new progress_bar(getPrintSize(ff.getSize()),fileName, ff.getSize());
                     new Thread(bar).start();
                     ftpClient.retrieveFile(ff.getName(), is);
+                    logger.info("文件："+fileName+" 下载成功");
                     new Thread(bar).stop();
                     is.close();
                     flag = true;

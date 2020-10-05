@@ -1,5 +1,7 @@
 package top.ncserver.update;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
@@ -14,8 +16,9 @@ public class zip {
      * @param descDir 指定解压目录
      * @return 解压结果：成功，失败
      */
-
+    public static final Logger logger = Logger.getLogger(zip.class);
     public static boolean decompressZip(String zipPath, String descDir) {
+        logger.info("开始解压");
         File zipFile = new File(zipPath);
         boolean flag = false;
         File pathFile = new File(descDir);
