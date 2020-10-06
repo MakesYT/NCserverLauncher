@@ -9,23 +9,24 @@ import java.text.NumberFormat;
 
 import static java.lang.Math.abs;
 
-public class progress_bar implements Runnable{
+public class progress_bar implements Runnable {
     public static final Logger logger = Logger.getLogger(progress_bar.class);
-    private String filesize;
-    private String filename;
-    private long size1;
-    File directory ;
+    File directory;
     String percent;
     // 创建一个数值格式化对象
     NumberFormat numberFormat = NumberFormat.getInstance();
+    private final String filesize;
+    private final String filename;
+    private final long size1;
+
     // 设置精确到小数点后2位
-    public progress_bar(String printSize,String name,long size) {
-       filesize=printSize;
-       //filename=name;
+    public progress_bar(String printSize, String name, long size) {
+        filesize = printSize;
+        filename=name;
         // 创建一个数值格式化对象
 
-        size1=size;
-       directory = new File(name);
+        size1 = size;
+        directory = new File(name);
     }
 
     @Override
@@ -38,31 +39,30 @@ public class progress_bar implements Runnable{
         }
         JFrame bar = new JFrame("我是一个无情的进度条");
         Point point = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-        bar.setSize((int) (point.x/3), (int) (point.x/3*0.618));
+        bar.setSize(point.x / 3, (int) (point.x / 3 * 0.618));
         bar.setLocationRelativeTo(null);
         bar.setResizable(false);
         bar.setVisible(true);
 
         JLabel bar_ = new JLabel("");
-        Font font=new Font("宋体",Font.BOLD,20);
+        Font font = new Font("宋体", Font.BOLD, 20);
         bar_.setFont(font);
         bar.add(bar_);
         logger.info(filename);
-    while (abs(size1-directory.length())>=100)
-    {
+        while (abs(size1 - directory.length()) >= 100) {
 
-        try {
-            numberFormat.setMaximumFractionDigits(2);
-            percent=numberFormat.format((double) directory.length()/(double)size1*100);
-            logger.info(FTPClient.getPrintSize(directory.length())+"  "+percent+"%");
-            bar_.setText(FTPClient.getPrintSize(directory.length())+"/"+filesize+"  "+percent+"%");
-            bar.add(bar_);
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                numberFormat.setMaximumFractionDigits(2);
+                percent = numberFormat.format((double) directory.length() / (double) size1 * 100);
+                logger.info(FTPClient.getPrintSize(directory.length()) + "  " + percent + "%");
+                bar_.setText(FTPClient.getPrintSize(directory.length()) + "/" + filesize + "  " + percent + "%");
+                bar.add(bar_);
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
-
-    }
         bar.setVisible(false);
     }
 }

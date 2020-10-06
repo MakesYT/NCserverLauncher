@@ -1,15 +1,18 @@
 package top.ncserver.update;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.SocketException;
-
-import org.apache.commons.net.ftp.*;
-
-import org.apache.log4j.Logger;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 简单操作FTP工具类 ,此工具类支持中文文件名，不支持中文目录
@@ -18,8 +21,8 @@ import org.apache.log4j.Logger;
 
 public class FTPClient {
 
-    public static org.apache.commons.net.ftp.FTPClient ftpClient = null;
     public static final Logger logger = Logger.getLogger(FTPClient.class);
+    public static org.apache.commons.net.ftp.FTPClient ftpClient = null;
     public static String[] update_backpack = new String[30];
     public static int update_backpack_size = 0;
 
@@ -48,6 +51,7 @@ public class FTPClient {
             return String.valueOf(value) + "GB";
         }
     }
+
     /**
      * 获取FTPClient对象
      *
@@ -93,7 +97,7 @@ public class FTPClient {
     /**
      * 关闭FTP方法
      *
-     * @param ftpClient
+  //   * @param ftpClient
      * @return boolean
      */
     public static boolean closeFTP(org.apache.commons.net.ftp.FTPClient ftpClient) {
@@ -120,11 +124,11 @@ public class FTPClient {
     /**
      * 从FTP服务器下载文件
      *
-     * @param ftpClient
+ //    * @param ftpClient
      * @param remotePath FTP服务器上的相对路径
      * @param fileName   要下载的文件名
      * @param localPath  下载后保存到本地的路径
-     * @return
+ //    * @return
      */
 
     public static String downFile(org.apache.commons.net.ftp.FTPClient ftpClient,
@@ -139,12 +143,12 @@ public class FTPClient {
                 if (ff.getName().equals(fileName)) {
                     File localFile = new File(localPath + "/" + ff.getName());
                     OutputStream is = new FileOutputStream(localFile);
-                    logger.info("下载开始,文件："+fileName+" 大小："+getPrintSize(ff.getSize()));
-                    progress_bar bar=new progress_bar(getPrintSize(ff.getSize()),fileName, ff.getSize());
+                    logger.info("下载开始,文件：" + fileName + " 大小：" + getPrintSize(ff.getSize()));
+                    progress_bar bar = new progress_bar(getPrintSize(ff.getSize()), fileName, ff.getSize());
                     new Thread(bar).start();
                     ftpClient.retrieveFile(ff.getName(), is);
-                    logger.info("文件："+fileName+" 下载成功");
-                    new Thread(bar).stop();
+                    logger.info("文件：" + fileName + " 下载成功");
+                    //new Thread(bar).stop();
                     is.close();
                     flag = true;
 
@@ -159,11 +163,9 @@ public class FTPClient {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (ftpClient.isConnected()) {
-                //ftp.disconnect();
-            }
-        }
+        } //finally {
+           // if (ftpClient.isConnected()) { }
+       // }
         return result;
     }
 
@@ -178,7 +180,7 @@ public class FTPClient {
         int i = 0;
         logger.info(folderPath);
         try {
-            ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"), "ISO-8859-1"));
+            ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"), StandardCharsets.ISO_8859_1));
             //设置FTP连接模式
             ftpClient.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
@@ -213,7 +215,7 @@ public class FTPClient {
         String folderPath = "";
 
         try {
-            ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"), "iso-8859-1"));
+            ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"), StandardCharsets.ISO_8859_1));
             //设置FTP连接模式
             ftpClient.enterLocalPassiveMode();
             FTPFile[] files = ftpClient.listFiles();
@@ -232,6 +234,9 @@ public class FTPClient {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("检测服务器当前周目失败");
+            JOptionPane.showMessageDialog(null, "网络异常", "错误", JOptionPane.ERROR_MESSAGE);
+
+            System.exit(1);
         }
         return null;
     }

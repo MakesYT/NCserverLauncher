@@ -8,10 +8,11 @@ import java.awt.*;
 public class ui {
     public static final Logger logger = Logger.getLogger(ui.class);
     public static JFrame main = new JFrame("Ncharge更新器");
+
     public static void Init_ui() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         Point point = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-        main.setSize((int) (point.x/1.75), (int) (point.x/1.75*0.618));
+        main.setSize((int) (point.x / 1.75), (int) (point.x / 1.75 * 0.618));
         main.setLocationRelativeTo(null);
         main.setResizable(false);
         main.setVisible(true);
@@ -19,8 +20,8 @@ public class ui {
         JLabel icon1 = new JLabel();
         JLabel title = new JLabel("Ncharge\n客户端更新程序");
         title.setForeground(Color.black);
-        title.setBounds(150, 35,(int) (point.x/1.75) , 50);
-        Font font=new Font("宋体",Font.BOLD,30);
+        title.setBounds(150, 35, (int) (point.x / 1.75), 50);
+        Font font = new Font("宋体", Font.BOLD, 30);
         title.setFont(font);
         icon1.setIcon(icon);
         icon1.setBounds(1, 1, icon.getIconWidth(), icon.getIconHeight());
