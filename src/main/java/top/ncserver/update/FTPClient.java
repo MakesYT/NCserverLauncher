@@ -229,13 +229,10 @@ public class FTPClient {
                 }
 
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("检测服务器当前周目失败");
-            JOptionPane.showMessageDialog(null, "网络异常", "错误", JOptionPane.ERROR_MESSAGE);
-
+            JOptionPane.showMessageDialog(main.alwaysOnTop, "网络异常", "错误", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         return null;

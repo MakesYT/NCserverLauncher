@@ -43,7 +43,7 @@ public class progress_bar implements Runnable {
         bar.setLocationRelativeTo(null);
         bar.setResizable(false);
         bar.setVisible(true);
-
+        bar.setAlwaysOnTop(true);
         JLabel bar_ = new JLabel("");
         Font font = new Font("宋体", Font.BOLD, 20);
         bar_.setFont(font);

@@ -44,12 +44,12 @@ public class update {
                                             FTPClient.update_backpack[i].indexOf(".zip"));
                             reload();
                         } else {
-                            JOptionPane.showMessageDialog(null, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
                             System.exit(0);
                         }
                     } else {
                         logger.info(flag);
-                        JOptionPane.showMessageDialog(null, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }

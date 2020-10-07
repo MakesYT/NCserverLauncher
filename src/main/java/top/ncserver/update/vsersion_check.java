@@ -2,16 +2,30 @@ package top.ncserver.update;
 
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.io.*;
+import java.util.Objects;
 
 public class vsersion_check {
     public static final Logger logger = Logger.getLogger(vsersion_check.class);
     public static String client_version;
     public static String server_version;
-
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i< Objects.requireNonNull(children).length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // 目录此时为空，可以删除
+        return dir.delete();
+    }
     //public static FTP test = new FTP();
-    public static boolean check() throws IOException {
-
+    public static boolean check() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         org.apache.commons.net.ftp.FTPClient ftpClient = FTPClient.getFTPClient("nas.ncserver.top", 21, "update", "n~7z26");
 
         server_version = FTPClient.check_Weeks_orders(ftpClient);
@@ -27,9 +41,9 @@ public class vsersion_check {
                 new FileInputStream(client)); // 建立一个输入流对象reader
         BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
         client_version = br.readLine();
-        //FTP.closeFTP(ftp);
-        //logger.info(client_version);
-        //logger.info("V"+server_version);
+
+
+
         return client_version.equals("V" + server_version);
     }
 }
