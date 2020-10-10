@@ -24,15 +24,15 @@ public class ex_client {
             JOptionPane.showMessageDialog(main.alwaysOnTop, "未检测到任何服务器文件，开始下载最新客户端，最新版本：" + server_version);
             FTPClient.readFileByFolder(ftpClient, server_version.charAt(0) + "周目/");
             System.gc();
+            Long startTime = System.currentTimeMillis();
             String flag = FTPClient.downFile(ftpClient, server_version.charAt(0) + "周目/",
                     "V" + server_version + ".zip", directory.getAbsolutePath());
             if (flag.equals("下载成功 ！")) {
-
-                JOptionPane.showMessageDialog(main.alwaysOnTop, "下载完成，开始解压");
+                Long endTime = System.currentTimeMillis();
+                JOptionPane.showMessageDialog(main.alwaysOnTop, "下载完成，开始解压。下载耗时："+(endTime - startTime) / 1000);
                 if (zip.decompressZip(directory.getAbsolutePath() + "/" + "V" + server_version + ".zip", directory.getAbsolutePath() + "/")) {
                     zip.logger.info("解压完成");
                     JOptionPane.showMessageDialog(main.alwaysOnTop, "解压完成，客户端安装成功");
-                    File client = new File("version.txt");
                         FileWriter writer = new FileWriter("version.txt");
                         writer.write("V" + server_version);
                         writer.close();
