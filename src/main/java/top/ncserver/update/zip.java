@@ -2,6 +2,7 @@ package top.ncserver.update;
 
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
@@ -18,7 +19,8 @@ public class zip {
      */
     public static final Logger logger = Logger.getLogger(zip.class);
 
-    public static boolean decompressZip(String zipPath, String descDir) {
+    public static boolean decompressZip(String zipPath, String descDir) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         logger.info("开始解压");
         File zipFile = new File(zipPath);
         boolean flag = false;
@@ -60,6 +62,14 @@ public class zip {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (flag){
+            logger.info("解压成功");
+        }else {
+            JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
+            logger.error("解压失败");
+            System.exit(0);
+        }
+
         return flag;
     }
 }

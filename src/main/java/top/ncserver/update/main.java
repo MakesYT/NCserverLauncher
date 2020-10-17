@@ -15,6 +15,7 @@ public class main {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         alwaysOnTop.setAlwaysOnTop(true);
         if (network_check()){
+            logger.info("网络连接正常");
             if (ex_client.ex_check()) {
                 if (vsersion_check.check()) {
                     logger.info("无需更新");
@@ -23,35 +24,42 @@ public class main {
                     if (!vsersion_check.client_version.substring(1, 2).equals(vsersion_check.server_version.substring(0, 1)))
                     {
                         JOptionPane.showMessageDialog(alwaysOnTop,"检测到当前客户端非最新周目，将进行周目更新");
+                        logger.info("检测到当前客户端非最新周目，将进行周目更新");
                         File folder = new File(".minecraft");
-
                         if (vsersion_check.deleteDir(folder))
                         {
                             JOptionPane.showMessageDialog(alwaysOnTop,"删除旧客户端完成");
+                            logger.info("删除旧客户端完成");
                             ex_client.ex_check();
                         }
 
                         else {
-                            JOptionPane.showMessageDialog(alwaysOnTop, "删除失败", "错误", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(alwaysOnTop, "删除旧客户端失败", "错误", JOptionPane.ERROR_MESSAGE);
+                            logger.error("删除旧客户端失败");
                             System.exit(1);
                         }
 
                     }else
                     update.start();
                     if (vsersion_check.check())
-                        logger.info("更新完成");
+                        logger.info("更新完成。当前版本："+ vsersion_check.client_version);
                     JOptionPane.showMessageDialog(alwaysOnTop, "更新完成!当前版本：" + vsersion_check.client_version);
 
                 }
             }
     }
-        else JOptionPane.showMessageDialog(alwaysOnTop, "网络异常(甚至连接不上百度)", "错误", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            JOptionPane.showMessageDialog(alwaysOnTop, "网络异常(甚至连接不上百度)", "错误", JOptionPane.ERROR_MESSAGE);
+            logger.error("网络异常(甚至连接不上百度)");
+        }
         System.exit(0);
     }
 
     /**
      */
     static boolean network_check(){
+        logger.info("开始网络检测");
         try {
             InetAddress address = InetAddress.getByName("www.baidu.com");
             return address.isReachable(1000);

@@ -13,7 +13,7 @@ public class ex_client {
 
     public static boolean ex_check() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
+        logger.info("开始周目检测");
         File folder = new File(".minecraft");
         File directory = new File("");
         if (!folder.exists() && !folder.isDirectory()) {
@@ -21,15 +21,18 @@ public class ex_client {
             org.apache.commons.net.ftp.FTPClient ftpClient = FTPClient.getFTPClient("nas.ncserver.top", 21, "update", "n~7z26");
             String server_version = FTPClient.check_Weeks_orders(ftpClient);
             assert server_version != null;
+            logger.info("未检测到任何服务器文件，开始下载最新客户端，最新版本：" + server_version);
             JOptionPane.showMessageDialog(main.alwaysOnTop, "未检测到任何服务器文件，开始下载最新客户端，最新版本：" + server_version);
             FTPClient.readFileByFolder(ftpClient, server_version.charAt(0) + "周目/");
             System.gc();
             Long startTime = System.currentTimeMillis();
+            logger.info("准备下载");
             String flag = FTPClient.downFile(ftpClient, server_version.charAt(0) + "周目/",
                     "V" + server_version + ".zip", directory.getAbsolutePath());
             if (flag.equals("下载成功 ！")) {
                 Long endTime = System.currentTimeMillis();
                 JOptionPane.showMessageDialog(main.alwaysOnTop, "下载完成，开始解压。下载耗时："+(endTime - startTime) / 1000);
+                logger.info("下载完成，准备解压");
                 if (zip.decompressZip(directory.getAbsolutePath() + "/" + "V" + server_version + ".zip", directory.getAbsolutePath() + "/")) {
                     zip.logger.info("解压完成");
                     JOptionPane.showMessageDialog(main.alwaysOnTop, "解压完成，客户端安装成功");
@@ -38,12 +41,11 @@ public class ex_client {
                         writer.close();
                 } else {
                     JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
-                    logger.error("解压失败");
+                    zip.logger.error("解压失败");
                     System.exit(0);
                 }
             } else {
                 JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
-                logger.error(flag);
                 System.exit(0);
             }
 

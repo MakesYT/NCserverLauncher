@@ -158,6 +158,8 @@ public class FTPClient {
 
             if (!flag) {
                 result = "文件: " + fileName + "不存在 ！";
+                logger.error("无法下载，错误：文件:"+ fileName + "不存在 ！");
+                JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
             } else {
                 result = "下载成功 ！";
             }
@@ -166,6 +168,9 @@ public class FTPClient {
         } //finally {
            // if (ftpClient.isConnected()) { }
        // }
+        if(result=="下载失败 ！")
+            logger.error("无法下载，错误：网络异常");
+        JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
         return result;
     }
 
@@ -178,14 +183,14 @@ public class FTPClient {
      */
     public static void readFileByFolder(org.apache.commons.net.ftp.FTPClient ftpClient, String folderPath) {
         int i = 0;
-        logger.info(folderPath);
+        //logger.info(folderPath);
         try {
             ftpClient.changeWorkingDirectory(new String(folderPath.getBytes("GBK"), StandardCharsets.ISO_8859_1));
             //设置FTP连接模式
             ftpClient.enterLocalPassiveMode();
             //获取指定目录下文件文件对象集合
             FTPFile[] files = ftpClient.listFiles();
-            logger.info(files.length);
+            //logger.info(files.length);
 
             for (FTPFile file : files) {
 
@@ -194,7 +199,7 @@ public class FTPClient {
                     if (fileName.matches("(.*)_to_(.*)")) {
                         update_backpack[i] = fileName;
                         i++;
-                        logger.info(fileName);
+                        //logger.info(fileName);
                         update_backpack_size = i;
                     }
                 }

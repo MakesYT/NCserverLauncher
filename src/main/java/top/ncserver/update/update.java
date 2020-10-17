@@ -9,6 +9,7 @@ public class update {
     public static final Logger logger = Logger.getLogger(update.class);
 
     public static void reload() throws IOException {
+        logger.info("重载版本号");
         File client = new File("version.txt");
         if (!client.exists()) {
             FileWriter writer = new FileWriter("version.txt");
@@ -19,12 +20,14 @@ public class update {
                 new FileInputStream(client)); // 建立一个输入流对象reader
         BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
         vsersion_check.client_version = br.readLine();
+        logger.info("重载完成");
     }
 
     public static void start() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // logger.info(FTP.update_backpack[0]);
         File directory = new File("");
         while (!vsersion_check.client_version.equals("V" + vsersion_check.server_version))
+            logger.info("开始更新");
             for (int i = 0; i <= FTPClient.update_backpack_size - 1; i++) {
                 //logger.info(FTP.update_backpack[i].indexOf(vsersion_check.client_version));
                 if (FTPClient.update_backpack[i].indexOf(vsersion_check.client_version) == 0) {
@@ -35,6 +38,7 @@ public class update {
                         if (zip.decompressZip(directory.getAbsolutePath() + "/" + FTPClient.update_backpack[i], directory.getAbsolutePath() + "/")) {
                             logger.info(FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_") + 4,
                                     FTPClient.update_backpack[i].indexOf(".zip")));
+                            logger.info("开始改写版本号");
                             FileWriter writer = new FileWriter("version.txt");
                             writer.write(FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_") + 4,
                                     FTPClient.update_backpack[i].indexOf(".zip")));
@@ -42,15 +46,9 @@ public class update {
                             vsersion_check.client_version =
                                     FTPClient.update_backpack[i].substring(FTPClient.update_backpack[i].indexOf("_to_") + 5,
                                             FTPClient.update_backpack[i].indexOf(".zip"));
+                            logger.info("改写版本号完成");
                             reload();
-                        } else {
-                            JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
-                            System.exit(0);
                         }
-                    } else {
-                        logger.info(flag);
-                        JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
-                        return;
                     }
                 }
             }

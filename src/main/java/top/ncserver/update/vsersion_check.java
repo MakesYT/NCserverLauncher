@@ -29,6 +29,7 @@ public class vsersion_check {
         org.apache.commons.net.ftp.FTPClient ftpClient = FTPClient.getFTPClient("nas.ncserver.top", 21, "update", "n~7z26");
 
         server_version = FTPClient.check_Weeks_orders(ftpClient);
+        logger.info("客户端最新版本V"+server_version);
         assert server_version != null;
         FTPClient.readFileByFolder(ftpClient, server_version.charAt(0) + "周目/");
         File client = new File("version.txt");

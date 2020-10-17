@@ -48,8 +48,8 @@ public class progress_bar implements Runnable {
         Font font = new Font("宋体", Font.BOLD, 20);
         bar_.setFont(font);
         bar.add(bar_);
-        logger.info(filename);
-        while (abs(size1 - directory.length()) >= 100) {
+        logger.info("确认监听文件："+filename);
+        while (abs(size1 - directory.length()) >= 10) {
 
             try {
                 numberFormat.setMaximumFractionDigits(2);
