@@ -67,7 +67,7 @@ public class zip {
         }else {
             JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
             logger.error("解压失败");
-            System.exit(0);
+            System.exit(1);
         }
 
         return flag;

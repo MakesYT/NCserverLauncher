@@ -26,8 +26,9 @@ public class update {
     public static void start() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // logger.info(FTP.update_backpack[0]);
         File directory = new File("");
+        logger.info("开始更新");
         while (!vsersion_check.client_version.equals("V" + vsersion_check.server_version))
-            logger.info("开始更新");
+
             for (int i = 0; i <= FTPClient.update_backpack_size - 1; i++) {
                 //logger.info(FTP.update_backpack[i].indexOf(vsersion_check.client_version));
                 if (FTPClient.update_backpack[i].indexOf(vsersion_check.client_version) == 0) {

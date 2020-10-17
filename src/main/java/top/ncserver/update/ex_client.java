@@ -39,14 +39,7 @@ public class ex_client {
                         FileWriter writer = new FileWriter("version.txt");
                         writer.write("V" + server_version);
                         writer.close();
-                } else {
-                    JOptionPane.showMessageDialog(main.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
-                    zip.logger.error("解压失败");
-                    System.exit(0);
                 }
-            } else {
-                JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
             }
 
             return false;

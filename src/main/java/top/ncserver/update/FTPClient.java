@@ -160,7 +160,8 @@ public class FTPClient {
                 result = "文件: " + fileName + "不存在 ！";
                 logger.error("无法下载，错误：文件:"+ fileName + "不存在 ！");
                 JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
-            } else {
+                System.exit(1);}
+            else {
                 result = "下载成功 ！";
             }
         } catch (IOException e) {
@@ -168,9 +169,7 @@ public class FTPClient {
         } //finally {
            // if (ftpClient.isConnected()) { }
        // }
-        if(result=="下载失败 ！")
-            logger.error("无法下载，错误：网络异常");
-        JOptionPane.showMessageDialog(main.alwaysOnTop, "下载失败", "错误", JOptionPane.ERROR_MESSAGE);
+
         return result;
     }
 

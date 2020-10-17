@@ -49,7 +49,7 @@ public class progress_bar implements Runnable {
         bar_.setFont(font);
         bar.add(bar_);
         logger.info("确认监听文件："+filename);
-        while (abs(size1 - directory.length()) >= 10) {
+        while (abs(size1 - directory.length()) >= 1) {
 
             try {
                 numberFormat.setMaximumFractionDigits(2);
