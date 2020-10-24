@@ -59,6 +59,7 @@ public class zip {
             flag = true;
             zip.close();
             zipFile.delete();
+            update_del.del();
         } catch (IOException e) {
             e.printStackTrace();
         }
