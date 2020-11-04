@@ -1,30 +1,18 @@
 package top.ncserver.update;
-import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.EofSensorInputStream;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import sun.awt.image.PNGImageDecoder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.RenderedImage;
+import javax.swing.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,25 +23,36 @@ public class Login {
     public static String userName;
     public static InputStream uservia;
     public static void Login() throws Exception {
-        firstLogin();
-        userGet();
-        viaGet();
+        if (firstLogin()) {
+            UI.main.setVisible(false);
+            userGet();
+            viaGet();
+            UI.UI();
+        }else {
+            JOptionPane.showMessageDialog(INIT.alwaysOnTop, "登陆失败", "错误", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
-    public static void firstLogin() throws Exception {
+    public static boolean firstLogin() throws Exception {
         String url = "https://www.ncserver.top:666/api/auth/login";
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         post.setHeader("User-Agent", USER_AGENT);
         post.setHeader("Accept", "application/json");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("email", ""));
-        urlParameters.add(new BasicNameValuePair("password", "" ));
+        urlParameters.add(new BasicNameValuePair("email", UI.user_jtextField.getText()));
+        urlParameters.add(new BasicNameValuePair("password", String.valueOf(UI.pass_jpassField.getPassword())));
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
         HttpResponse response = client.execute(post);
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
         JSONObject result=new JSONObject(rd.readLine());
         token=result.getString("token");
+        if (token.length()>=2) {
+            return true;
+        } else {
+            return false;
+        }
     }
     public static void userGet() throws Exception {
         String url = "https://www.ncserver.top:666/api/players";
@@ -83,7 +82,18 @@ public class Login {
         uservia= response.getEntity().getContent();
         int index;
         byte[] bytes = new byte[1024];
-        FileOutputStream downloadFile = new FileOutputStream("G://1.png");
+        File file = null;
+        try {
+            file = new File("C:\\temp\\Ncharge_client");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        }catch (Exception e)
+        {
+
+        }
+
+            FileOutputStream downloadFile = new FileOutputStream("C:\\temp\\Ncharge_client\\via.png");
         while ((index = uservia.read(bytes)) != -1) {
             downloadFile.write(bytes, 0, index);
             downloadFile.flush();
