@@ -139,18 +139,22 @@ public class UI {
         });
         lblNewLabel.add(closeButton);
 
-        ImageIcon via = new ImageIcon("C:\\temp\\Ncharge_client\\via.png");
-        //设置图片在窗体中显示的宽度、高度
-        JLayeredPane via_layeredPane = new JLayeredPane();
-        via_layeredPane.setBounds(0, -5, width, height);
-        JPanel via_panel = new JPanel();
-        via_panel.setBounds(0, -5, width, height);
-        via_layeredPane.add(via_panel, JLayeredPane.MODAL_LAYER);
-        JLabel via_lblNewLabel = new JLabel("");
-        via_panel.add(via_lblNewLabel);
-        via_lblNewLabel.setIcon(via);
-
-        main.add(via_layeredPane);
+        JButton via = new JButton("头像");
+        via.setBorderPainted(false);
+        via.setMargin(new Insets(0,0,0,0));
+        via.setFocusPainted(false);
+        via.setContentAreaFilled(false);
+        via.setBounds(20,20,128,128);
+        via.setIcon(new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png"));
+        lblNewLabel.add(via);
+        JTextArea title = new JTextArea(Login.userName+"\n欢迎您\n游玩本服务器");
+        title.setBounds(150,20,220,150);
+        title.setBorder(null);
+        title.setOpaque(false);
+        Font font =new Font("楷体",Font.BOLD|Font.ITALIC,32);
+        title.setFont(font);
+        title.setForeground(Color.white);
+        lblNewLabel.add(title);
         main.setResizable(false);
         main.setVisible(true);
     }

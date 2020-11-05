@@ -84,7 +84,7 @@ public class Login {
         byte[] bytes = new byte[1024];
         File file = null;
         try {
-            file = new File("C:\\temp\\Ncharge_client");
+            file = new File("C:\\Windows\\Temp\\Ncharge_client");
             if (!file.exists()) {
                 file.mkdirs();
             }
@@ -93,7 +93,7 @@ public class Login {
 
         }
 
-            FileOutputStream downloadFile = new FileOutputStream("C:\\temp\\Ncharge_client\\via.png");
+            FileOutputStream downloadFile = new FileOutputStream("C:\\Windows\\Temp\\Ncharge_client\\via.png");
         while ((index = uservia.read(bytes)) != -1) {
             downloadFile.write(bytes, 0, index);
             downloadFile.flush();
