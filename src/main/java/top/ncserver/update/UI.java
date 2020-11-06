@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 
 public class UI {
 
@@ -25,7 +26,7 @@ public class UI {
         main.setUndecorated(true);
         main.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         main.getContentPane().setBackground(Color.white);
-        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 80, 80));
+        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 50, 50));
         main.setResizable(false);
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, -5, width, height);
@@ -57,6 +58,28 @@ public class UI {
         });
         lblNewLabel.add(closeButton);
 
+        JButton registerButton = new JButton("注册");
+        registerButton.setBorderPainted(false);
+        registerButton.setMargin(new Insets(0,0,0,0));
+        registerButton.setFocusPainted(false);
+        registerButton.setContentAreaFilled(false);
+        registerButton.setBounds(210,210,110,40);
+        registerButton.setIcon(new ImageIcon(INIT.class.getResource("/registerButton_N.png")));
+        registerButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/registerButton_C.png")));
+        registerButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/registerButton_P.png")));
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String command = "cmd /c start https://www.ncserver.top:666/auth/register";
+                try {
+                    Runtime.getRuntime().exec(command);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+        lblNewLabel.add(registerButton);
+
         JTextArea title = new JTextArea("登录");
         title.setBounds(160,50,100,50);
         title.setBorder(null);
@@ -78,13 +101,13 @@ public class UI {
         lblNewLabel.add(pass_jpassField);
         JButton loginButton = new JButton("确定");
         loginButton.setBorderPainted(false);
-        //loginButton.setMargin(new Insets(0,0,0,0));
-        //loginButton.setFocusPainted(false);
-        //loginButton.setContentAreaFilled(false);
-        loginButton.setBounds(150,210,100,50);
-        //loginButton.setIcon(new ImageIcon(INIT.class.getResource("/closeButton_N.png")));
-        //loginButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/closeButton_C.png")));
-        //loginButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/closeButton_P.png")));
+        loginButton.setMargin(new Insets(0,0,0,0));
+        loginButton.setFocusPainted(false);
+        loginButton.setContentAreaFilled(false);
+        loginButton.setBounds(90,210,110,40);
+        loginButton.setIcon(new ImageIcon(INIT.class.getResource("/loginButton_N.png")));
+        loginButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/loginButton_C.png")));
+        loginButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/loginButton_P.png")));
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +131,7 @@ public class UI {
         main.setUndecorated(true);
         main.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         main.getContentPane().setBackground(Color.white);
-        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 80, 80));
+        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 50, 50));
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, -5, width, height);
         // 创建图片对象
