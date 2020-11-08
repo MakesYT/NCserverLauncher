@@ -8,9 +8,9 @@ public class INIT {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         alwaysOnTop.setAlwaysOnTop(true);
        //
-       // Login.Login();
+       // UI.UI();
 
-        UI.loginUI();
-
+        //UI.loginUI();
+MC_Login.MC_Login();
     }
 }

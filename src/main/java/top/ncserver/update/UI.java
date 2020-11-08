@@ -18,7 +18,7 @@ public class UI {
     public static JFrame main;
     public static void loginUI()
     {
-        int width =400;
+        int width =450;
         int height=300;
         main = new JFrame("Login");
         main.setSize(width,height);
@@ -63,7 +63,7 @@ public class UI {
         registerButton.setMargin(new Insets(0,0,0,0));
         registerButton.setFocusPainted(false);
         registerButton.setContentAreaFilled(false);
-        registerButton.setBounds(210,210,110,40);
+        registerButton.setBounds(230,210,110,40);
         registerButton.setIcon(new ImageIcon(INIT.class.getResource("/registerButton_N.png")));
         registerButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/registerButton_C.png")));
         registerButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/registerButton_P.png")));
@@ -81,30 +81,30 @@ public class UI {
         lblNewLabel.add(registerButton);
 
         JTextArea title = new JTextArea("登录");
-        title.setBounds(160,50,100,50);
+        title.setBounds(190,50,100,50);
         title.setBorder(null);
         title.setOpaque(false);
-        Font font =new Font("楷体",Font.BOLD|Font.ITALIC,32);
+        Font font =new Font("黑体",Font.BOLD|Font.ITALIC,32);
         title.setFont(font);
         title.setForeground(Color.white);
         lblNewLabel.add(title);
 
         user_jtextField = new MyJtextField();
-        user_jtextField.setBounds(110, 110, 180, 44);
+        user_jtextField.setBounds(120, 110, 210, 44);
         user_jtextField.addFocusListener(new JTextFieldHintListener(user_jtextField, "邮箱"));
         lblNewLabel.add(user_jtextField);
 
         pass_jpassField = new MyJpassTextfield();
-        pass_jpassField.setBounds(110, 160, 180, 44);
+        pass_jpassField.setBounds(120, 160, 210, 44);
         pass_jpassField.addFocusListener(new JTextFieldHintListener(pass_jpassField, "密码"));
         pass_jpassField.setEchoChar((char)0);
         lblNewLabel.add(pass_jpassField);
-        JButton loginButton = new JButton("确定");
+        JButton loginButton = new JButton("登陆");
         loginButton.setBorderPainted(false);
         loginButton.setMargin(new Insets(0,0,0,0));
         loginButton.setFocusPainted(false);
         loginButton.setContentAreaFilled(false);
-        loginButton.setBounds(90,210,110,40);
+        loginButton.setBounds(110,210,110,40);
         loginButton.setIcon(new ImageIcon(INIT.class.getResource("/loginButton_N.png")));
         loginButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/loginButton_C.png")));
         loginButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/loginButton_P.png")));
@@ -123,7 +123,7 @@ public class UI {
         main.setVisible(true);
     }
     public static void UI(){
-        int width =800;
+        int width =900;
         int height=500;
         JFrame main = new JFrame("Ncharge服务器");
         main.setSize(width,height);
@@ -171,14 +171,16 @@ public class UI {
         via.setIcon(new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png"));
         lblNewLabel.add(via);
         JTextArea title = new JTextArea(Login.userName+"\n欢迎您\n游玩本服务器");
-        title.setBounds(150,20,220,150);
+       // JTextArea title = new JTextArea("MakesYT"+"\n欢迎您\n游玩本服务器");
+        title.setBounds(150,30,220,150);
         title.setBorder(null);
         title.setOpaque(false);
-        Font font =new Font("楷体",Font.BOLD|Font.ITALIC,32);
+        Font font =new Font("楷体",Font.BOLD,32);
         title.setFont(font);
         title.setForeground(Color.white);
         lblNewLabel.add(title);
         main.setResizable(false);
         main.setVisible(true);
+        System.out.println(Login.token);
     }
 }

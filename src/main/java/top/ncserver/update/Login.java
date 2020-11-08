@@ -20,6 +20,8 @@ public class Login {
     public static final Logger logger = Logger.getLogger(Login.class);
     public static final String USER_AGENT = "Ncharge client/3.0beta";
     public static String token;
+    public static String user_email;
+    public static String password;
     public static String userName;
     public static InputStream uservia;
     public static void Login() throws Exception {
@@ -40,8 +42,10 @@ public class Login {
         post.setHeader("User-Agent", USER_AGENT);
         post.setHeader("Accept", "application/json");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("email", UI.user_jtextField.getText()));
-        urlParameters.add(new BasicNameValuePair("password", String.valueOf(UI.pass_jpassField.getPassword())));
+        user_email=UI.user_jtextField.getText();
+        password=String.valueOf(UI.pass_jpassField.getPassword());
+        urlParameters.add(new BasicNameValuePair("email", user_email));
+        urlParameters.add(new BasicNameValuePair("password",password ));
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
         HttpResponse response = client.execute(post);
         BufferedReader rd = new BufferedReader(
