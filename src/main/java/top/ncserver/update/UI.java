@@ -1,14 +1,18 @@
 package top.ncserver.update;
+import top.ncserver.update.MC_start.MC_Login;
 import top.ncserver.update.Mysetting.JTextFieldHintListener;
 import top.ncserver.update.Mysetting.MyJpassTextfield;
 import top.ncserver.update.Mysetting.MyJtextField;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
 public class UI {
 
@@ -122,7 +126,7 @@ public class UI {
 
         main.setVisible(true);
     }
-    public static void UI(){
+    public static void UI() throws Exception {
         int width =900;
         int height=500;
         JFrame main = new JFrame("Ncharge服务器");
@@ -133,7 +137,7 @@ public class UI {
         main.getContentPane().setBackground(Color.white);
         main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 50, 50));
         JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setBounds(0, -5, width, height);
+        layeredPane.setBounds(0, 0, width, height);
         // 创建图片对象
         ImageIcon img = new ImageIcon(INIT.class.getResource("/bg/bg.png"));
         //设置图片在窗体中显示的宽度、高度
@@ -162,16 +166,16 @@ public class UI {
         });
         lblNewLabel.add(closeButton);
 
-        JButton via = new JButton("头像");
-        via.setBorderPainted(false);
-        via.setMargin(new Insets(0,0,0,0));
-        via.setFocusPainted(false);
-        via.setContentAreaFilled(false);
-        via.setBounds(20,20,128,128);
-        via.setIcon(new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png"));
-        lblNewLabel.add(via);
+        JButton via1 = new JButton();
+        ImageIcon viaIcon=new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png");
+        via1.setIcon(viaIcon);
+        via1.setBorderPainted(false);
+        via1.setMargin(new Insets(0,0,0,0));
+        via1.setFocusPainted(false);
+        via1.setContentAreaFilled(false);
+        via1.setBounds(20,20,128,128);
+        lblNewLabel.add(via1);
         JTextArea title = new JTextArea(Login.userName+"\n欢迎您\n游玩本服务器");
-       // JTextArea title = new JTextArea("MakesYT"+"\n欢迎您\n游玩本服务器");
         title.setBounds(150,30,220,150);
         title.setBorder(null);
         title.setOpaque(false);
@@ -182,5 +186,6 @@ public class UI {
         main.setResizable(false);
         main.setVisible(true);
         System.out.println(Login.token);
+       // MC_Login.MC_init();
     }
 }

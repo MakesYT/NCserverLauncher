@@ -1,5 +1,7 @@
 package top.ncserver.update;
 import org.apache.log4j.Logger;
+import top.ncserver.update.MC_start.MC_Login;
+
 import javax.swing.*;
 public class INIT {
     public static final Logger logger = Logger.getLogger(INIT.class);
@@ -10,7 +12,7 @@ public class INIT {
        //
        // UI.UI();
 
-        //UI.loginUI();
-MC_Login.MC_Login();
+        UI.loginUI();
+       // MC_Login.MC_init();
     }
 }

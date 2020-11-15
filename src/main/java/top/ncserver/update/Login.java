@@ -76,12 +76,14 @@ public class Login {
         userName=result2.getString("name");
     }
     public static void viaGet() throws Exception {
-        String url = "https://www.ncserver.top:666/avatar/player/"+userName;
+        String url = "https://www.ncserver.top:666/avatar/player/"+userName+"?png";
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(url);
         get.setHeader("User-Agent", USER_AGENT);
         get.setHeader("Accept", "application/json");
+        get.setHeader("png", "");
         get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        //get.add(new BasicNameValuePair("email", user_email));
         HttpResponse response = client.execute(get);
         uservia= response.getEntity().getContent();
         int index;
@@ -92,7 +94,7 @@ public class Login {
             if (!file.exists()) {
                 file.mkdirs();
             }
-        }catch (Exception e)
+        }catch (Exception ignored)
         {
 
         }
