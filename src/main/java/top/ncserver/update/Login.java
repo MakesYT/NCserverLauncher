@@ -69,9 +69,9 @@ public class Login {
         BufferedReader rd2 = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
         String temp = rd2.readLine();
-        System.out.println(temp);
+        //System.out.println(temp);
         String result =temp.substring(1,temp.length()-1);
-        System.out.println(result);
+        //System.out.println(result);
         JSONObject result2=new JSONObject(result);
         userName=result2.getString("name");
     }

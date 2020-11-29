@@ -1,6 +1,7 @@
 package top.ncserver.update;
 import top.ncserver.update.MC_start.MC_Login;
 import top.ncserver.update.Mysetting.JTextFieldHintListener;
+import top.ncserver.update.Mysetting.MyJFrame;
 import top.ncserver.update.Mysetting.MyJpassTextfield;
 import top.ncserver.update.Mysetting.MyJtextField;
 
@@ -19,48 +20,12 @@ public class UI {
 
     public static JTextField user_jtextField;
     public static JPasswordField pass_jpassField;
-    public static JFrame main;
+    public static MyJFrame main;
     public static void loginUI()
     {
         int width =450;
         int height=300;
-        main = new JFrame("Login");
-        main.setSize(width,height);
-        main.setLocationRelativeTo(main.getOwner());
-        main.setUndecorated(true);
-        main.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        main.getContentPane().setBackground(Color.white);
-        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 50, 50));
-        main.setResizable(false);
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setBounds(0, -5, width, height);
-        // 创建图片对象
-        ImageIcon img = new ImageIcon(INIT.class.getResource("/bg/bg.png"));
-        //设置图片在窗体中显示的宽度、高度
-        img.setImage(img.getImage().getScaledInstance(width, height,Image.SCALE_DEFAULT));
-        JPanel panel = new JPanel();
-        panel.setBounds(0, -5, width, height);
-        layeredPane.add(panel, JLayeredPane.DEFAULT_LAYER);
-        JLabel lblNewLabel = new JLabel("");
-        panel.add(lblNewLabel);
-        lblNewLabel.setIcon(img);
-        main.getContentPane().add(layeredPane);
-        JButton closeButton = new JButton("关闭");
-        closeButton.setBorderPainted(false);
-        closeButton.setMargin(new Insets(0,0,0,0));
-        closeButton.setFocusPainted(false);
-        closeButton.setContentAreaFilled(false);
-        closeButton.setBounds(width-40,0,50,50);
-        closeButton.setIcon(new ImageIcon(INIT.class.getResource("/closeButton_N.png")));
-        closeButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/closeButton_C.png")));
-        closeButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/closeButton_P.png")));
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        lblNewLabel.add(closeButton);
+         main=new MyJFrame("Login",width,height);
 
         JButton registerButton = new JButton("注册");
         registerButton.setBorderPainted(false);
@@ -82,7 +47,7 @@ public class UI {
                 }
             }
         });
-        lblNewLabel.add(registerButton);
+        main.addJButton(registerButton);
 
         JTextArea title = new JTextArea("登录");
         title.setBounds(190,50,100,50);
@@ -91,18 +56,18 @@ public class UI {
         Font font =new Font("黑体",Font.BOLD|Font.ITALIC,32);
         title.setFont(font);
         title.setForeground(Color.white);
-        lblNewLabel.add(title);
+        main.addJTextArea(title);
 
         user_jtextField = new MyJtextField();
         user_jtextField.setBounds(120, 110, 210, 44);
         user_jtextField.addFocusListener(new JTextFieldHintListener(user_jtextField, "邮箱"));
-        lblNewLabel.add(user_jtextField);
+        main.addJTextField(user_jtextField);
 
         pass_jpassField = new MyJpassTextfield();
         pass_jpassField.setBounds(120, 160, 210, 44);
         pass_jpassField.addFocusListener(new JTextFieldHintListener(pass_jpassField, "密码"));
         pass_jpassField.setEchoChar((char)0);
-        lblNewLabel.add(pass_jpassField);
+        main.addJpasswordfield(pass_jpassField);
         JButton loginButton = new JButton("登陆");
         loginButton.setBorderPainted(false);
         loginButton.setMargin(new Insets(0,0,0,0));
@@ -122,50 +87,41 @@ public class UI {
                 }
             }
         });
-        lblNewLabel.add(loginButton);
+        main.addJButton(loginButton);
 
         main.setVisible(true);
     }
     public static void UI() throws Exception {
         int width =900;
         int height=500;
-        JFrame main = new JFrame("Ncharge服务器");
-        main.setSize(width,height);
-        main.setLocationRelativeTo(main.getOwner());
-        main.setUndecorated(true);
-        main.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        main.getContentPane().setBackground(Color.white);
-        main.setShape(new RoundRectangle2D.Double(0, 0, main.getWidth(), main.getHeight(), 50, 50));
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setBounds(0, 0, width, height);
-        // 创建图片对象
-        ImageIcon img = new ImageIcon(INIT.class.getResource("/bg/bg.png"));
-        //设置图片在窗体中显示的宽度、高度
-        img.setImage(img.getImage().getScaledInstance(width, height,Image.SCALE_DEFAULT));
-        JPanel panel = new JPanel();
-        panel.setBounds(0, -5, width, height);
-        layeredPane.add(panel, JLayeredPane.DEFAULT_LAYER);
-        JLabel lblNewLabel = new JLabel("");
-        panel.add(lblNewLabel);
-        lblNewLabel.setIcon(img);
-        main.getContentPane().add(layeredPane);
-        JButton closeButton = new JButton("关闭");
-        closeButton.setBorderPainted(false);
-        closeButton.setMargin(new Insets(0,0,0,0));
-        closeButton.setFocusPainted(false);
-        closeButton.setContentAreaFilled(false);
-        closeButton.setBounds(width-50,0,50,50);
-        closeButton.setIcon(new ImageIcon(INIT.class.getResource("/closeButton_N.png")));
-        closeButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/closeButton_C.png")));
-        closeButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/closeButton_P.png")));
-        closeButton.addActionListener(new ActionListener() {
+        MyJFrame mainFrame=new MyJFrame("Ncharge服务器",width,height);
+
+        JButton startButton=new JButton("启动游戏");
+        startButton.setForeground(Color.white);
+        startButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        Font startButtonFont =new Font("楷体",Font.BOLD,32);
+        startButton.setOpaque(false);
+        startButton.setFont(startButtonFont);
+        startButton.setBorderPainted(false);
+        startButton.setMargin(new Insets(0,0,0,0));
+        startButton.setFocusPainted(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setBounds(20,200,280,79);
+        startButton.setIcon(new ImageIcon(INIT.class.getResource("/startButton_N.png")));
+        startButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/startButton_C.png")));
+        startButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/startButton_P.png")));
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                try {
+                    MC_Login.MC_init();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
-        lblNewLabel.add(closeButton);
-
+        mainFrame.addJButton(startButton);
+        
         JButton via1 = new JButton();
         ImageIcon viaIcon=new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png");
         via1.setIcon(viaIcon);
@@ -174,18 +130,19 @@ public class UI {
         via1.setFocusPainted(false);
         via1.setContentAreaFilled(false);
         via1.setBounds(20,20,128,128);
-        lblNewLabel.add(via1);
-        JTextArea title = new JTextArea(Login.userName+"\n欢迎您\n游玩本服务器");
+        mainFrame.addJButton(via1);
+        JTextArea title = new JTextArea(Login.userName+
+                 "\n欢迎您\n游玩本服务器");
         title.setBounds(150,30,220,150);
         title.setBorder(null);
         title.setOpaque(false);
         Font font =new Font("楷体",Font.BOLD,32);
         title.setFont(font);
         title.setForeground(Color.white);
-        lblNewLabel.add(title);
-        main.setResizable(false);
-        main.setVisible(true);
-        System.out.println(Login.token);
-       // MC_Login.MC_init();
+        mainFrame.addJTextArea(title);
+        mainFrame.setResizable(false);
+        mainFrame.setVisible(true);
+       // System.out.println(Login.token);
+        //MC_Login.MC_init();
     }
 }

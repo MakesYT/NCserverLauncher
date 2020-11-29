@@ -13,20 +13,32 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.protocol.HTTP;
 import top.ncserver.update.Login;
+import top.ncserver.update.download;
 
 public class MC_Login {
     public static final String USER_AGENT = "Ncharge client/3.0beta";
     public static String MC_accessToken;
-    public static String uuid;
+    public static String uuid;//http://download.ncserver.top:8000/update/authlib-injector.jar
     public static void MC_init() throws Exception {
-    MC_Login();
-    MC_start.MC_start();
+        authlib_injector();
+        MC_Login();
+        MC_start.MC_start();
     }
+    public static void authlib_injector()
+    {
+        File authlib_file=new File(System.getProperty("user.dir")+"\\.minecraft\\authlib-injector.jar");
+        if (!authlib_file.exists())
+        {
+            download.downloadHttpUrl("http://download.ncserver.top:8000/update/",System.getProperty("user.dir")+"\\.minecraft\\","authlib-injector.jar");
+        }
+    }
+
     public static boolean MC_Login() throws Exception {
         String url = "https://www.ncserver.top:666/api/yggdrasil/authserver/authenticate/";
         HttpClient client = new DefaultHttpClient();
