@@ -1,31 +1,30 @@
 package top.ncserver.update;
+import org.json.JSONException;
+import org.json.JSONObject;
 import top.ncserver.update.MC_start.MC_Login;
-import top.ncserver.update.Mysetting.JTextFieldHintListener;
-import top.ncserver.update.Mysetting.MyJFrame;
-import top.ncserver.update.Mysetting.MyJpassTextfield;
-import top.ncserver.update.Mysetting.MyJtextField;
+import top.ncserver.update.MC_start.McClientDownload;
+import top.ncserver.update.Mysetting.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 
+/**
+ * @author MakesYT
+ */
 public class UI {
 
 
     public static JTextField user_jtextField;
     public static JPasswordField pass_jpassField;
     public static MyJFrame main;
-    public static void loginUI()
-    {
+    public static void loginui() throws IOException {
         int width =450;
         int height=300;
-         main=new MyJFrame("Login",width,height);
+         main=new MyJFrame("Login",width,height,1);
 
         JButton registerButton = new JButton("注册");
         registerButton.setBorderPainted(false);
@@ -94,23 +93,8 @@ public class UI {
     public static void UI() throws Exception {
         int width =900;
         int height=500;
-        MyJFrame mainFrame=new MyJFrame("Ncharge服务器",width,height);
-
-        JButton startButton=new JButton("启动游戏");
-        startButton.setForeground(Color.white);
-        startButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        Font startButtonFont =new Font("楷体",Font.BOLD,32);
-        startButton.setOpaque(false);
-        startButton.setFont(startButtonFont);
-        startButton.setBorderPainted(false);
-        startButton.setMargin(new Insets(0,0,0,0));
-        startButton.setFocusPainted(false);
-        startButton.setContentAreaFilled(false);
-        startButton.setBounds(20,200,280,79);
-        startButton.setIcon(new ImageIcon(INIT.class.getResource("/startButton_N.png")));
-        startButton.setRolloverIcon(new ImageIcon(INIT.class.getResource("/startButton_C.png")));
-        startButton.setPressedIcon(new ImageIcon(INIT.class.getResource("/startButton_P.png")));
-        startButton.addActionListener(new ActionListener() {
+        MyJFrame mainFrame=new MyJFrame("Ncharge服务器",width,height,1);
+        class MyActionListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -119,9 +103,30 @@ public class UI {
                     exception.printStackTrace();
                 }
             }
-        });
-        mainFrame.addJButton(startButton);
-        
+        }
+        MyJButton startButton=new MyJButton(mainFrame,"启动游戏",20,200,new MyActionListener());
+        class download implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try {
+                    McClientDownload.mcClientDownloadInit();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        }
+        MyJButton downloadButton=new MyJButton(mainFrame,"下载/修复客户端",20,300,new download());
+        class config_m implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                configUI.configUI();
+            }
+        }
+        MyJButton configButton=new MyJButton(mainFrame,"设置",20,400,new config_m());
+
+
         JButton via1 = new JButton();
         ImageIcon viaIcon=new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png");
         via1.setIcon(viaIcon);

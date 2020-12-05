@@ -6,6 +6,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import org.apache.commons.lang.StringUtils;
+/**
+ * @author MakesYT
+ */
 public class JTextFieldHintListener implements FocusListener {
     private String hintText;
 

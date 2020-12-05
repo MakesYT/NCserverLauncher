@@ -1,25 +1,20 @@
 package top.ncserver.update;
 import org.apache.log4j.Logger;
-import top.ncserver.update.MC_start.MC_Login;
-import top.ncserver.update.Mysetting.JTextFieldHintListener;
-import top.ncserver.update.Mysetting.MyJFrame;
-import top.ncserver.update.Mysetting.MyJtextField;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
 
-
+/**
+ * @author MakesYT
+ */
 public class INIT {
     public static final Logger logger = Logger.getLogger(INIT.class);
     public static JFrame alwaysOnTop =new JFrame("AlwaysOnTop");
     public static void main(String[] args) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        //json_init.init();
         alwaysOnTop.setAlwaysOnTop(true);
         //MyJFrame main=new MyJFrame("1",200,300);
         //JTextField a=new JTextField();
-
 
        // JFileChooser chooser = new JFileChooser("C:\\Program Files\\Java");
         //chooser.setFileFilter(new FileNameExtensionFilter("exe(*.exe)", "exe"));
@@ -31,8 +26,14 @@ public class INIT {
         //a.setText(file.getAbsoluteFile().toString());
         //main.addJTextField(a);
         //main.setVisible(true);
+
+        //progress_bar bar = new progress_bar("http://download.ncserver.top:8000/update/C","6.1.0.zip");
+        //new Thread(bar).start();
+        //download.downloadHttpUrl("http://download.ncserver.top:8000/update/C",System.getProperty("user.dir"),"/"+"6.1.0.zip");
+
         json_init.init();
-         UI.loginUI();//
+        UI.loginui();//
+
        // UI.UI();
         //Runtime.getRuntime().exec("C:/Windows/System32/cmd.exe /k start\u0020C:\\Windows\\Temp\\Ncharge_client\\start.bat");
 

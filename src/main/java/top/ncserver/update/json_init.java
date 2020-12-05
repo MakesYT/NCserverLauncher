@@ -5,7 +5,9 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.HashMap;
-
+/**
+ * @author MakesYT
+ */
 public class json_init {
     public static JSONObject config;
     private static String path=System.getProperty("user.dir")+"\\config.json";
@@ -24,7 +26,7 @@ public class json_init {
                 while((tempString = reader.readLine()) != null){
                     str += tempString;
                 }
-                System.out.println(str);
+                //System.out.println(str);
                 config=new JSONObject(str);
             } catch (JSONException e) {
                 //create();
@@ -39,8 +41,10 @@ public class json_init {
     }
     public static void create()  {
         HashMap<String,Object> person=new HashMap<String,Object>();
-        person.put("C_version","3.0.0-beta");
+        person.put("version","3.0.0-beta");
+        person.put("C_version","6.1.0");
         person.put("java","auto");
+        person.put("RAM",4096);
         person.put("desc","1.游戏启动支持。");
         String s=new JSONObject(person).toString();
 

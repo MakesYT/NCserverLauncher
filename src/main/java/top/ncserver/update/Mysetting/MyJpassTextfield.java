@@ -2,7 +2,9 @@ package top.ncserver.update.Mysetting;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * @author MakesYT
+ */
 public class MyJpassTextfield extends JPasswordField {
     private Shape shape;
     public MyJpassTextfield() {

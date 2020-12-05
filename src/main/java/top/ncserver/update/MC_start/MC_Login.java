@@ -14,13 +14,16 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.protocol.HTTP;
 import top.ncserver.update.Login;
 import top.ncserver.update.download;
-
+/**
+ * @author MakesYT
+ */
 public class MC_Login {
     public static final String USER_AGENT = "Ncharge client/3.0beta";
     public static String MC_accessToken;
@@ -30,8 +33,7 @@ public class MC_Login {
         MC_Login();
         MC_start.MC_start();
     }
-    public static void authlib_injector()
-    {
+    public static void authlib_injector() throws IOException {
         File authlib_file=new File(System.getProperty("user.dir")+"\\.minecraft\\authlib-injector.jar");
         if (!authlib_file.exists())
         {

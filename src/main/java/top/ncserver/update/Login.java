@@ -15,7 +15,9 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author MakesYT
+ */
 public class Login {
     public static final Logger logger = Logger.getLogger(Login.class);
     public static final String USER_AGENT = "Ncharge client/3.0beta";

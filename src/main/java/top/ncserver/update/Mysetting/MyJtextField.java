@@ -2,7 +2,9 @@ package top.ncserver.update.Mysetting;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * @author MakesYT
+ */
 public class MyJtextField extends JTextField {
     private Shape shape;
     public MyJtextField() {

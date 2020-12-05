@@ -9,15 +9,27 @@ import top.ncserver.update.json_init;
 import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-
+/**
+ * @author MakesYT
+ */
 public class MC_start {
     public static StringBuilder lib=new StringBuilder();
     public static void MC_start() throws IOException {
         //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         //alwaysOnTop.setAlwaysOnTop(true);
         String path=System.getProperty("user.dir")+"\\config.json";
-
-        String java= json_init.config.getString("java");
+        String str = "";
+        FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"\\config.json");
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+        String tempString = null;
+        while((tempString = reader.readLine()) != null){
+            str += tempString;
+        }
+        //System.out.println(str);
+        JSONObject config=new JSONObject(str);
+        String java= config.getString("java");
+        int RAM=config.getInt("RAM");
         if ("auto".equals(java)) {
             java=System.getProperty("java.home") + "\\bin\\java.exe";
         }
@@ -29,7 +41,7 @@ public class MC_start {
         start="set APPDATA="+l+"\r\n"+"cd /D "+l+"\\.minecraft\\versions\\PO3-3.3.59\\\r\n"+"\"" + java + "\""+
                 " -Dminecraft.client.jar="+l+"\\.minecraft\\versions\\PO3-3.3.59\\PO3-3.3.59.jar"+
         " -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M" +
-                " -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -Xmn128m -Xmx6122m" +
+                " -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -Xmn128m -Xmx"+RAM+"m" +
                 " -Dfml.ignoreInvalidMinecraftCertificates=true -Dfml.ignorePatchDiscrepancies=true" +
                 " -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump"+
                 " -Djava.library.path="+l+"\\.minecraft\\versions\\PO3-3.3.59\\natives"+
