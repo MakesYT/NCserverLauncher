@@ -38,13 +38,13 @@ public class MC_start {
         System.out.println(l);
         func(l);
         String start="";
-        start="set APPDATA="+l+"\r\n"+"cd /D "+l+"\\.minecraft\\versions\\PO3-3.3.59\\\r\n"+"\"" + java + "\""+
-                " -Dminecraft.client.jar="+l+"\\.minecraft\\versions\\PO3-3.3.59\\PO3-3.3.59.jar"+
+        start="set APPDATA="+l+"\r\n"+"cd /D "+l+"\\.minecraft\\versions\\%name%\\\r\n"+"\"" + java + "\""+
+                " -Dminecraft.client.jar="+l+"\\.minecraft\\versions\\%name%\\%name%.jar"+
         " -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M" +
                 " -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -Xmn128m -Xmx"+RAM+"m" +
                 " -Dfml.ignoreInvalidMinecraftCertificates=true -Dfml.ignorePatchDiscrepancies=true" +
                 " -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump"+
-                " -Djava.library.path="+l+"\\.minecraft\\versions\\PO3-3.3.59\\natives"+
+                " -Djava.library.path="+l+"\\.minecraft\\versions\\%name%\\natives"+
                 " -Dminecraft.launcher.brand=Ncharge_launcher -Dminecraft.launcher.version=3.0-beta"+lib.toString()+
                 " -javaagent:"+l+"\\.minecraft\\authlib-injector.jar=https://www.ncserver.top:666/api/yggdrasil/" +
                 " -Dauthlibinjector.side=client -Dauthlibinjector.yggdrasil.prefetched=" +
@@ -52,32 +52,49 @@ public class MC_start {
                 " net.minecraft.launchwrapper.Launch"+
             " --username "+ Login.userName+
             " --version \"Ncharge client/3.0beta\""+
-            " --gameDir "+l+"\\.minecraft\\versions\\PO3-3.3.59"+
+            " --gameDir "+l+"\\.minecraft\\versions\\%name%"+
             " --assetsDir "+l+"\\.minecraft\\assets"+" --assetIndex 1.12"+
             " --uuid "+ MC_Login.uuid+" --accessToken "+MC_Login.MC_accessToken+
             " --userType mojang " +
                 "--tweakClass net.minecraftforge.fml.common.launcher.FMLTweaker " +
                 "--versionType Forge --width 854 --height 480";
+
+
+        String vName = l+"\\.minecraft\\versions";
+        //要遍历的路径
+        File file = new File(vName);
+        //获取其file对象
+        File[] fs = file.listFiles();
+        //遍历path下的文件和目录，放在File数组中
+        for(File f:fs){
+            //遍历File[]数组
+            if(f.isDirectory())
+                //若非目录(即文件)，则打印
+            {
+                start=start.replace("%name%",f.getName());
+            }
+        }
+
         System.out.println(start);
         //start=start.replace(" ","\u0009");
-        FileOutputStream fos= new FileOutputStream("C:\\Windows\\Temp\\Ncharge_client\\start.bat");
+        FileOutputStream fos= new FileOutputStream(System.getProperty("user.dir")+"\\temp\\start.bat");
         OutputStreamWriter os= new OutputStreamWriter(fos);
         BufferedWriter w= new BufferedWriter(os);
         w.write(start);
         w.close();
-        //Writer downloadFile = new OutputStreamWriter(new FileOutputStream("C:\\Windows\\Temp\\Ncharge_client\\start.bat"), StandardCharsets.US_ASCII);
+        //Writer downloadFile = new OutputStreamWriter(new FileOutputStream(System.getProperty("user.dir")+"\\temp\\start.bat"), StandardCharsets.US_ASCII);
         //downloadFile.write(start);
         //downloadFile.flush();
         //downloadFile.close();
 
         try {
-            Runtime.getRuntime().exec("C:/Windows/System32/cmd.exe /k start C:\\Windows\\Temp\\Ncharge_client\\start.bat");
+            Runtime.getRuntime().exec("C:/Windows/System32/cmd.exe /k start "+System.getProperty("user.dir")+"\\temp\\start.bat");
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
     public static void func(String l){
-       String lib_init="%lib%\\.minecraft\\libraries\\net\\minecraftforge\\forge\\1.12.2-14.23.5.2847\\forge-1.12.2-14.23.5.2847.jar;%lib%\\.minecraft\\libraries\\net\\minecraft\\launchwrapper\\1.12\\launchwrapper-1.12.jar;%lib%\\.minecraft\\libraries\\org\\ow2\\asm\\asm-all\\5.2\\asm-all-5.2.jar;%lib%\\.minecraft\\libraries\\org\\jline\\jline\\3.5.1\\jline-3.5.1.jar;%lib%\\.minecraft\\libraries\\net\\java\\dev\\jna\\jna\\4.4.0\\jna-4.4.0.jar;%lib%\\.minecraft\\libraries\\com\\typesafe\\akka\\akka-actor_2.11\\2.3.3\\akka-actor_2.11-2.3.3.jar;%lib%\\.minecraft\\libraries\\com\\typesafe\\config\\1.2.1\\config-1.2.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-actors-migration_2.11\\1.1.0\\scala-actors-migration_2.11-1.1.0.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-compiler\\2.11.1\\scala-compiler-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\plugins\\scala-continuations-library_2.11\\1.0.2\\scala-continuations-library_2.11-1.0.2.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\plugins\\scala-continuations-plugin_2.11.1\\1.0.2\\scala-continuations-plugin_2.11.1-1.0.2.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-library\\2.11.1\\scala-library-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-parser-combinators_2.11\\1.0.1\\scala-parser-combinators_2.11-1.0.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-reflect\\2.11.1\\scala-reflect-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-swing_2.11\\1.0.1\\scala-swing_2.11-1.0.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-xml_2.11\\1.0.2\\scala-xml_2.11-1.0.2.jar;%lib%\\.minecraft\\libraries\\lzma\\lzma\\0.0.1\\lzma-0.0.1.jar;%lib%\\.minecraft\\libraries\\net\\sf\\jopt-simple\\jopt-simple\\5.0.3\\jopt-simple-5.0.3.jar;%lib%\\.minecraft\\libraries\\java3d\\vecmath\\1.5.2\\vecmath-1.5.2.jar;%lib%\\.minecraft\\libraries\\net\\sf\\trove4j\\trove4j\\3.0.3\\trove4j-3.0.3.jar;%lib%\\.minecraft\\libraries\\org\\apache\\maven\\maven-artifact\\3.5.3\\maven-artifact-3.5.3.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\patchy\\1.1\\patchy-1.1.jar;%lib%\\.minecraft\\libraries\\oshi-project\\oshi-core\\1.1\\oshi-core-1.1.jar;%lib%\\.minecraft\\libraries\\net\\java\\dev\\jna\\platform\\3.4.0\\platform-3.4.0.jar;%lib%\\.minecraft\\libraries\\com\\ibm\\icu\\icu4j-core-mojang\\51.2\\icu4j-core-mojang-51.2.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\codecjorbis\\20101023\\codecjorbis-20101023.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\codecwav\\20101023\\codecwav-20101023.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\libraryjavasound\\20101123\\libraryjavasound-20101123.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\librarylwjglopenal\\20100824\\librarylwjglopenal-20100824.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\soundsystem\\20120107\\soundsystem-20120107.jar;%lib%\\.minecraft\\libraries\\io\\netty\\netty-all\\4.1.9.Final\\netty-all-4.1.9.Final.jar;%lib%\\.minecraft\\libraries\\com\\google\\guava\\guava\\21.0\\guava-21.0.jar;%lib%\\.minecraft\\libraries\\org\\apache\\commons\\commons-lang3\\3.5\\commons-lang3-3.5.jar;%lib%\\.minecraft\\libraries\\commons-io\\commons-io\\2.5\\commons-io-2.5.jar;%lib%\\.minecraft\\libraries\\commons-codec\\commons-codec\\1.10\\commons-codec-1.10.jar;%lib%\\.minecraft\\libraries\\net\\java\\jinput\\jinput\\2.0.5\\jinput-2.0.5.jar;%lib%\\.minecraft\\libraries\\net\\java\\jutils\\jutils\\1.0.0\\jutils-1.0.0.jar;%lib%\\.minecraft\\libraries\\com\\google\\code\\gson\\gson\\2.8.0\\gson-2.8.0.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\authlib\\1.5.25\\authlib-1.5.25.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\realms\\1.10.22\\realms-1.10.22.jar;%lib%\\.minecraft\\libraries\\org\\apache\\commons\\commons-compress\\1.8.1\\commons-compress-1.8.1.jar;%lib%\\.minecraft\\libraries\\org\\apache\\httpcomponents\\httpclient\\4.3.3\\httpclient-4.3.3.jar;%lib%\\.minecraft\\libraries\\commons-logging\\commons-logging\\1.1.3\\commons-logging-1.1.3.jar;%lib%\\.minecraft\\libraries\\org\\apache\\httpcomponents\\httpcore\\4.3.2\\httpcore-4.3.2.jar;%lib%\\.minecraft\\libraries\\it\\unimi\\dsi\\fastutil\\7.1.0\\fastutil-7.1.0.jar;%lib%\\.minecraft\\libraries\\org\\apache\\logging\\log4j\\log4j-api\\2.8.1\\log4j-api-2.8.1.jar;%lib%\\.minecraft\\libraries\\org\\apache\\logging\\log4j\\log4j-core\\2.8.1\\log4j-core-2.8.1.jar;%lib%\\.minecraft\\libraries\\org\\lwjgl\\lwjgl\\lwjgl\\2.9.4-nightly-20150209\\lwjgl-2.9.4-nightly-20150209.jar;%lib%\\.minecraft\\libraries\\org\\lwjgl\\lwjgl\\lwjgl_util\\2.9.4-nightly-20150209\\lwjgl_util-2.9.4-nightly-20150209.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\text2speech\\1.10.3\\text2speech-1.10.3.jar;%lib%\\.minecraft\\versions\\PO3-3.3.59\\PO3-3.3.59.jar";
+       String lib_init="%lib%\\.minecraft\\libraries\\net\\minecraftforge\\forge\\1.12.2-14.23.5.2847\\forge-1.12.2-14.23.5.2847.jar;%lib%\\.minecraft\\libraries\\net\\minecraft\\launchwrapper\\1.12\\launchwrapper-1.12.jar;%lib%\\.minecraft\\libraries\\org\\ow2\\asm\\asm-all\\5.2\\asm-all-5.2.jar;%lib%\\.minecraft\\libraries\\org\\jline\\jline\\3.5.1\\jline-3.5.1.jar;%lib%\\.minecraft\\libraries\\net\\java\\dev\\jna\\jna\\4.4.0\\jna-4.4.0.jar;%lib%\\.minecraft\\libraries\\com\\typesafe\\akka\\akka-actor_2.11\\2.3.3\\akka-actor_2.11-2.3.3.jar;%lib%\\.minecraft\\libraries\\com\\typesafe\\config\\1.2.1\\config-1.2.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-actors-migration_2.11\\1.1.0\\scala-actors-migration_2.11-1.1.0.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-compiler\\2.11.1\\scala-compiler-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\plugins\\scala-continuations-library_2.11\\1.0.2\\scala-continuations-library_2.11-1.0.2.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\plugins\\scala-continuations-plugin_2.11.1\\1.0.2\\scala-continuations-plugin_2.11.1-1.0.2.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-library\\2.11.1\\scala-library-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-parser-combinators_2.11\\1.0.1\\scala-parser-combinators_2.11-1.0.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-reflect\\2.11.1\\scala-reflect-2.11.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-swing_2.11\\1.0.1\\scala-swing_2.11-1.0.1.jar;%lib%\\.minecraft\\libraries\\org\\scala-lang\\scala-xml_2.11\\1.0.2\\scala-xml_2.11-1.0.2.jar;%lib%\\.minecraft\\libraries\\lzma\\lzma\\0.0.1\\lzma-0.0.1.jar;%lib%\\.minecraft\\libraries\\net\\sf\\jopt-simple\\jopt-simple\\5.0.3\\jopt-simple-5.0.3.jar;%lib%\\.minecraft\\libraries\\java3d\\vecmath\\1.5.2\\vecmath-1.5.2.jar;%lib%\\.minecraft\\libraries\\net\\sf\\trove4j\\trove4j\\3.0.3\\trove4j-3.0.3.jar;%lib%\\.minecraft\\libraries\\org\\apache\\maven\\maven-artifact\\3.5.3\\maven-artifact-3.5.3.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\patchy\\1.1\\patchy-1.1.jar;%lib%\\.minecraft\\libraries\\oshi-project\\oshi-core\\1.1\\oshi-core-1.1.jar;%lib%\\.minecraft\\libraries\\net\\java\\dev\\jna\\platform\\3.4.0\\platform-3.4.0.jar;%lib%\\.minecraft\\libraries\\com\\ibm\\icu\\icu4j-core-mojang\\51.2\\icu4j-core-mojang-51.2.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\codecjorbis\\20101023\\codecjorbis-20101023.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\codecwav\\20101023\\codecwav-20101023.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\libraryjavasound\\20101123\\libraryjavasound-20101123.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\librarylwjglopenal\\20100824\\librarylwjglopenal-20100824.jar;%lib%\\.minecraft\\libraries\\com\\paulscode\\soundsystem\\20120107\\soundsystem-20120107.jar;%lib%\\.minecraft\\libraries\\io\\netty\\netty-all\\4.1.9.Final\\netty-all-4.1.9.Final.jar;%lib%\\.minecraft\\libraries\\com\\google\\guava\\guava\\21.0\\guava-21.0.jar;%lib%\\.minecraft\\libraries\\org\\apache\\commons\\commons-lang3\\3.5\\commons-lang3-3.5.jar;%lib%\\.minecraft\\libraries\\commons-io\\commons-io\\2.5\\commons-io-2.5.jar;%lib%\\.minecraft\\libraries\\commons-codec\\commons-codec\\1.10\\commons-codec-1.10.jar;%lib%\\.minecraft\\libraries\\net\\java\\jinput\\jinput\\2.0.5\\jinput-2.0.5.jar;%lib%\\.minecraft\\libraries\\net\\java\\jutils\\jutils\\1.0.0\\jutils-1.0.0.jar;%lib%\\.minecraft\\libraries\\com\\google\\code\\gson\\gson\\2.8.0\\gson-2.8.0.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\authlib\\1.5.25\\authlib-1.5.25.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\realms\\1.10.22\\realms-1.10.22.jar;%lib%\\.minecraft\\libraries\\org\\apache\\commons\\commons-compress\\1.8.1\\commons-compress-1.8.1.jar;%lib%\\.minecraft\\libraries\\org\\apache\\httpcomponents\\httpclient\\4.3.3\\httpclient-4.3.3.jar;%lib%\\.minecraft\\libraries\\commons-logging\\commons-logging\\1.1.3\\commons-logging-1.1.3.jar;%lib%\\.minecraft\\libraries\\org\\apache\\httpcomponents\\httpcore\\4.3.2\\httpcore-4.3.2.jar;%lib%\\.minecraft\\libraries\\it\\unimi\\dsi\\fastutil\\7.1.0\\fastutil-7.1.0.jar;%lib%\\.minecraft\\libraries\\org\\apache\\logging\\log4j\\log4j-api\\2.8.1\\log4j-api-2.8.1.jar;%lib%\\.minecraft\\libraries\\org\\apache\\logging\\log4j\\log4j-core\\2.8.1\\log4j-core-2.8.1.jar;%lib%\\.minecraft\\libraries\\org\\lwjgl\\lwjgl\\lwjgl\\2.9.4-nightly-20150209\\lwjgl-2.9.4-nightly-20150209.jar;%lib%\\.minecraft\\libraries\\org\\lwjgl\\lwjgl\\lwjgl_util\\2.9.4-nightly-20150209\\lwjgl_util-2.9.4-nightly-20150209.jar;%lib%\\.minecraft\\libraries\\com\\mojang\\text2speech\\1.10.3\\text2speech-1.10.3.jar;%lib%\\.minecraft\\versions\\%name%\\%name%.jar";
         lib.append(lib_init.replace("%lib%",l));
     }
 

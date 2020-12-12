@@ -29,6 +29,7 @@ public class MC_Login {
     public static String MC_accessToken;
     public static String uuid;//http://download.ncserver.top:8000/update/authlib-injector.jar
     public static void MC_init() throws Exception {
+        System.out.println("nn");
         authlib_injector();
         MC_Login();
         MC_start.MC_start();

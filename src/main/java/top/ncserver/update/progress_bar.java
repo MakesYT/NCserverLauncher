@@ -1,5 +1,6 @@
 package top.ncserver.update;
 
+import javafx.scene.control.ProgressBar;
 import org.apache.log4j.Logger;
 import top.ncserver.update.Mysetting.MyJFrame;
 
@@ -49,41 +50,41 @@ static String downloadedA;
         }
     }
     // 设置精确到小数点后2位
+    MyJFrame bar;
+    JTextField bar_;
     public progress_bar(String stringUrl, String name) throws IOException {
             fileSize=download.getFileSize(stringUrl+"/"+name);
             flieSizeAfterTreatment=getPrintSize(fileSize);
             fileName=name;
             directory=new File(System.getProperty("user.dir")+name);
+             bar = new MyJFrame("无情的进度条",500,250,3);
+         bar_ = new JTextField("");
+        Font font = new Font("宋体", Font.BOLD, 35);
+        bar_.setFont(font);
+        bar_.setForeground(Color.white);
+        bar_.setBounds(10,100,500,60);
+        bar_.setBorder(null);
+        bar_.setOpaque(false);
+        //assert bar != null;
+        bar.addJTextField(bar_);
+        bar.setVisible(true);
     }
 
     @Override
     public void run() {
-        MyJFrame bar= null;
-        try {
-            bar = new MyJFrame("无情的进度条",400,250,3);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        JTextField bar_ = new JTextField("");
-        Font font = new Font("宋体", Font.BOLD, 40);
-        bar_.setFont(font);
-        bar_.setForeground(Color.white);
-        bar_.setBounds(10,100,400,60);
-        bar_.setBorder(null);
-        bar_.setOpaque(false);
-        assert bar != null;
-        bar.addJTextField(bar_);
-        bar.setVisible(true);
         logger.info("确认监听文件："+fileName);
-        while (abs(fileSize - downloaded) >= 1) {
+        bar.setVisible(true);
+        while (abs(fileSize - downloaded) >= 1000) {
 
             try {
 
                 numberFormat.setMaximumFractionDigits(2);
-                //percent = numberFormat.format((double) downloaded / (double) fileSize * 100);
-                //logger.info(getPrintSize(directory.length()) + "  " + percent + "%");+ percent + "%"
-                bar_.setText(downloadedA + "/" + flieSizeAfterTreatment + "  " );
+
+                percent = numberFormat.format((double) downloaded / (double) fileSize * 100);
+                //logger.info(getPrintSize(directory.length()) + "  " + percent + "%");
+                bar_.setText(downloadedA + "/" + flieSizeAfterTreatment + "  "+ percent + "%" );
+
                 Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();

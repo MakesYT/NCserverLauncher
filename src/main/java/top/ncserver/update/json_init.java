@@ -41,8 +41,8 @@ public class json_init {
     }
     public static void create()  {
         HashMap<String,Object> person=new HashMap<String,Object>();
-        person.put("version","3.0.0-beta");
-        person.put("C_version","6.1.0");
+        person.put("version","3.0.2");
+        person.put("C_version","null");
         person.put("java","auto");
         person.put("RAM",4096);
         person.put("desc","1.游戏启动支持。");

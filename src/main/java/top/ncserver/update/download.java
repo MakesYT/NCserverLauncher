@@ -1,7 +1,9 @@
 package top.ncserver.update;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,7 +14,7 @@ import java.net.URLConnection;
  * @author MakesYT
  */
 public class download {
-
+    public static final Logger logger = Logger.getLogger(download.class);
     public static void downloadHttpUrl(String surl, String dir, String fileName)  {
         HttpURLConnection conn = null;
         OutputStream oputstream = null;
@@ -49,7 +51,10 @@ public class download {
 
 
     } catch (Exception e) {
-        e.printStackTrace();
+            //JOptionPane.showMessageDialog(INIT.alwaysOnTop, "获取版本号失败", "错误", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            //logger.error("获取版本号失败");
+            System.exit(1);
     } finally {
         try {
             //  重要且易忽略步骤 (关闭流,切记!)

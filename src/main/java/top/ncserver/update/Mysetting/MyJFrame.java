@@ -119,7 +119,9 @@ public class MyJFrame {
         lblNewLabel.add(name);
     }
     public void addJTextArea(JTextArea name) { lblNewLabel.add(name);}
+    public void addJProgressBar(JProgressBar name) { lblNewLabel.add(name);}
     public void setVisible(Boolean visible) { main.setVisible(visible); }
+
     public void setResizable(Boolean Resizable)
     {
         main.setResizable(Resizable);

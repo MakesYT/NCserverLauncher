@@ -109,11 +109,9 @@ public class UI {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try {
-                    McClientDownload.mcClientDownloadInit();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+
+                    McClientDownload startDownload=new McClientDownload();
+                new Thread(startDownload).start();
             }
         }
         MyJButton downloadButton=new MyJButton(mainFrame,"下载/修复客户端",20,300,new download());
@@ -128,7 +126,7 @@ public class UI {
 
 
         JButton via1 = new JButton();
-        ImageIcon viaIcon=new ImageIcon("C:\\Windows\\Temp\\Ncharge_client\\via.png");
+        ImageIcon viaIcon=new ImageIcon(System.getProperty("user.dir")+"//temp//via.png");
         via1.setIcon(viaIcon);
         via1.setBorderPainted(false);
         via1.setMargin(new Insets(0,0,0,0));

@@ -101,7 +101,7 @@ public class Login {
 
         }
 
-            FileOutputStream downloadFile = new FileOutputStream("C:\\Windows\\Temp\\Ncharge_client\\via.png");
+            FileOutputStream downloadFile = new FileOutputStream(System.getProperty("user.dir")+"\\temp\\via.png");
         while ((index = uservia.read(bytes)) != -1) {
             downloadFile.write(bytes, 0, index);
             downloadFile.flush();

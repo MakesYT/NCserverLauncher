@@ -1,32 +1,81 @@
 package top.ncserver.update.MC_start;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import top.ncserver.update.download;
 import top.ncserver.update.progress_bar;
+import top.ncserver.update.zip;
 
+import javax.swing.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
  * @author MakesYT
  */
-public class McClientDownload {
-    public static void mcClientDownloadInit() throws IOException {
-        File client = new File(System.getProperty("user.dir")+".minecraft");
+public class McClientDownload implements Runnable{
+    public  McClientDownload()  {
+
+         }
+    @Override
+    public void run() {
+        File client = new File(System.getProperty("user.dir")+"//.minecraft");
         if (client.exists())
         {
-            deleteFile(client);
+            System.out.println(client);
+            deleteAll(client);
+            //deleteFile(client);
         }
-        progress_bar bar = new progress_bar("http://download.ncserver.top:8000/update/C",getClientVersion()+".zip");
+        progress_bar bar = null;
+        try {
+            bar = new progress_bar("http://download.ncserver.top:8000/update/C",getClientVersion()+".zip");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(bar).start();
-        download.downloadHttpUrl("http://download.ncserver.top:8000/update/C",System.getProperty("user.dir"),"/"+getClientVersion()+".zip");
+
+        try {
+            download.downloadHttpUrl("http://download.ncserver.top:8000/update/C",System.getProperty("user.dir"),"/"+getClientVersion()+".zip");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            zip.decompressZip(System.getProperty("user.dir") + "/" + getClientVersion() + ".zip",System.getProperty("user.dir")+"/");
+
+        } catch (IOException | ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        JSONObject config;
+        try {
+            String str = "";
+            FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"\\config.json");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String tempString = null;
+            while((tempString = reader.readLine()) != null){
+                str += tempString;
+            }
+            //System.out.println(str);
+            config=new JSONObject(str);
+            config.remove("C_version");
+            config.put("C_version",getClientVersion());
+            //System.out.println(file.toString());
+            FileOutputStream fos= new FileOutputStream(System.getProperty("user.dir")+"\\config.json");
+            OutputStreamWriter os= new OutputStreamWriter(fos);
+            BufferedWriter w= new BufferedWriter(os);
+            w.write(config.toString());
+            w.close();
+        }catch (JSONException | IOException ae) { }
 
     }
     public static String getClientVersion() throws IOException {
-        download.downloadHttpUrl("http://download.ncserver.top:8000/update/","C:\\Windows\\Temp\\Ncharge_client\\","config.json");
+        download.downloadHttpUrl("http://download.ncserver.top:8000/update/",System.getProperty("user.dir")+"\\temp","config.json");
         try {
             String str = "";
-            FileInputStream fileInputStream = new FileInputStream("C:\\Windows\\Temp\\Ncharge_client\\config.json");
+            FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"\\temp\\config.json");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String tempString = null;
@@ -42,6 +91,18 @@ public class McClientDownload {
         }
         return null;
     }
+    public static void deleteAll(File file) {
+
+        if (file.isFile() || Objects.requireNonNull(file.list()).length == 0) {
+            file.delete();
+        } else {
+            for (File f : Objects.requireNonNull(file.listFiles())) {
+                deleteAll(f); // 递归删除每一个文件
+
+            }
+            file.delete(); // 删除文件夹
+        }
+    }
     public static boolean deleteFile(File dirFile) {
         // 如果dir对应的文件不存在，则退出
 
@@ -49,7 +110,7 @@ public class McClientDownload {
             return dirFile.delete();
         } else {
 
-            for (File file : dirFile.listFiles()) {
+            for (File file : Objects.requireNonNull(dirFile.listFiles())) {
                 deleteFile(file);
             }
         }
