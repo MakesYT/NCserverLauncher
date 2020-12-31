@@ -26,6 +26,9 @@ public class zip {
     public static boolean decompressZip(String zipPath, String descDir) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         logger.info("开始解压");
+        Info.type=1;
+        Info msg=new Info("文件下载完成，开始解压，请耐心等待提示解压完成");
+        new Thread(msg).start();
         File zipFile = new File(zipPath);
         boolean flag = false;
         File pathFile = new File(descDir);
@@ -68,7 +71,11 @@ public class zip {
             e.printStackTrace();
         }
         if (flag){
+            Info msg1=new Info("解压完成");
+
+            new Thread(msg1).start();
             logger.info("解压成功");
+            Info.setVisible(false);
         }else {
             JOptionPane.showMessageDialog(INIT.alwaysOnTop, "解压失败", "错误", JOptionPane.ERROR_MESSAGE);
             logger.error("解压失败");

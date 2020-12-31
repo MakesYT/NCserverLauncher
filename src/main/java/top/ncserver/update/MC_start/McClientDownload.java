@@ -1,8 +1,10 @@
 package top.ncserver.update.MC_start;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import top.ncserver.update.Info;
 import top.ncserver.update.download;
 import top.ncserver.update.progress_bar;
 import top.ncserver.update.zip;
@@ -15,6 +17,7 @@ import java.util.Objects;
  * @author MakesYT
  */
 public class McClientDownload implements Runnable{
+    static final Logger logger = Logger.getLogger(McClientDownload.class);
     public  McClientDownload()  {
 
          }
@@ -23,8 +26,13 @@ public class McClientDownload implements Runnable{
         File client = new File(System.getProperty("user.dir")+"//.minecraft");
         if (client.exists())
         {
-            System.out.println(client);
+            //System.out.println(client);
+            logger.info("正在删除旧客户端");
+            Info.type=1;
+            Info msg=new Info("正在删除旧客户端");
+            new Thread(msg).start();
             deleteAll(client);
+            Info.setVisible(false);
             //deleteFile(client);
         }
         progress_bar bar = null;
@@ -36,6 +44,8 @@ public class McClientDownload implements Runnable{
         new Thread(bar).start();
 
         try {
+            Info msg=new Info("正在下载客户端");
+            new Thread(msg).start();
             download.downloadHttpUrl("http://download.ncserver.top:8000/update/C",System.getProperty("user.dir"),"/"+getClientVersion()+".zip");
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,7 +82,7 @@ public class McClientDownload implements Runnable{
 
     }
     public static String getClientVersion() throws IOException {
-        download.downloadHttpUrl("http://download.ncserver.top:8000/update/",System.getProperty("user.dir")+"\\temp","config.json");
+        download.downloadHttpUrl("http://download.ncserver.top:8000/update/",System.getProperty("user.dir")+"\\temp\\","config.json");
         try {
             String str = "";
             FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"\\temp\\config.json");
@@ -84,7 +94,7 @@ public class McClientDownload implements Runnable{
             }
             //System.out.println(str);
             JSONObject config=new JSONObject(str);
-            System.out.println(config.getString("C_version"));
+            //System.out.println(config.getString("C_version"));
             return config.getString("C_version");
         } catch (JSONException | IOException e) {
             e.printStackTrace();

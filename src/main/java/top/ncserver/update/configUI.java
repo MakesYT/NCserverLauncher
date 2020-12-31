@@ -15,11 +15,7 @@ public class configUI {
     public static  void configUI()
     {
         MyJFrame configFrame= null;
-        try {
-            configFrame = new MyJFrame("config",280,300,2);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        configFrame = new MyJFrame("config",280,300,2);
         class MyActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {

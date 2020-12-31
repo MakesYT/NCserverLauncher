@@ -8,38 +8,39 @@ import java.io.File;
  * @author MakesYT
  */
 public class INIT {
-    public static final Logger logger = Logger.getLogger(INIT.class);
+     static Logger logger = Logger.getLogger(INIT.class);
     public static JFrame alwaysOnTop =new JFrame("AlwaysOnTop");
     public static void main(String[] args) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        //json_init.init();
+        Info.init();
+        Info.type=1;
+        Info msg=new Info("正在启动...");
+        new Thread(msg).start();
         alwaysOnTop.setAlwaysOnTop(true);
-        //MyJFrame main=new MyJFrame("1",200,300);
-        //JTextField a=new JTextField();
+        //创建临时目录，失败则退出
+        logger.info("开始初始化...");
 
-       // JFileChooser chooser = new JFileChooser("C:\\Program Files\\Java");
-        //chooser.setFileFilter(new FileNameExtensionFilter("exe(*.exe)", "exe"));
-        //chooser.setSelectedFile(new File("java.exe"));
-        //chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        //chooser.showDialog(new JLabel(), "选择");
-        //File file = chooser.getSelectedFile();
-        //System.out.println(file);
-        //a.setText(file.getAbsoluteFile().toString());
-        //main.addJTextField(a);
-        //main.setVisible(true);
-
-        //progress_bar bar = new progress_bar("http://download.ncserver.top:8000/update/C","6.1.0.zip");
-       // new Thread(bar).start();
-        //download.downloadHttpUrl("http://download.ncserver.top:8000/update/C",System.getProperty("user.dir"),"/"+"6.1.0.zip");
         File tempDir=new File(System.getProperty("user.dir")+"//temp");
-        tempDir.mkdirs();
+        if (tempDir.exists()){logger.info("临时目录已存在，跳过创建");}
+        else if (tempDir.mkdirs()){logger.info("临时目录创建成功");}
+        else if (!tempDir.mkdirs()&&!tempDir.exists())
+        { JOptionPane.showMessageDialog(INIT.alwaysOnTop, "权限异常，无法正常创建文件！", "错误", JOptionPane.ERROR_MESSAGE);
+            System.exit(1); }
+
+        //配置文件初始化
         json_init.init();
+
+
+        //检查更新
         Self_update.checkSelf();
-        UI.loginui();
-
-       // UI.UI();
-        //Runtime.getRuntime().exec("C:/Windows/System32/cmd.exe /k start\u0020C:\\Windows\\Temp\\Ncharge_client\\start.bat");
-
-       // MC_Login.MC_init();
+        //UI初始化
+        autoLogin.check();
+        if (autoLogin.autoLogin)
+        {
+            Login.Login();
+        }else {
+            UI.loginui();
+        }
+        Info.setVisible(false);
     }
 }

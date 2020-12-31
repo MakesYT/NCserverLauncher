@@ -11,17 +11,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import org.apache.log4j.Logger;
 
 /**
  * @author MakesYT
  */
 public class UI {
-
-
+    static Logger logger = Logger.getLogger(UI.class);
     public static JTextField user_jtextField;
     public static JPasswordField pass_jpassField;
+    public static JCheckBox autoLoginCheckBox;
     public static MyJFrame main;
+
     public static void loginui() throws IOException {
+        logger.info("开始加载登陆UI");
         int width =450;
         int height=300;
          main=new MyJFrame("Login",width,height,1);
@@ -88,9 +91,18 @@ public class UI {
         });
         main.addJButton(loginButton);
 
+        autoLoginCheckBox = new JCheckBox("自动登陆");
+        autoLoginCheckBox.setBounds(330,160,100,50);
+        autoLoginCheckBox.setForeground(Color.white);
+        autoLoginCheckBox.setFocusPainted(false);
+        autoLoginCheckBox.setContentAreaFilled(false);
+        main.addJCheckBox(autoLoginCheckBox);
+
         main.setVisible(true);
+        logger.info("登陆UI加载成功");
     }
-    public static void UI() throws Exception {
+    public static void UI() throws IOException {
+        logger.info("开始加载UI");
         int width =900;
         int height=500;
         MyJFrame mainFrame=new MyJFrame("Ncharge服务器",width,height,1);
@@ -147,5 +159,6 @@ public class UI {
         mainFrame.setVisible(true);
        // System.out.println(Login.token);
         //MC_Login.MC_init();
+        logger.info("加载登陆UI成功");
     }
 }

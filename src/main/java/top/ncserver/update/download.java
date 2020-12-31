@@ -15,7 +15,7 @@ import java.net.URLConnection;
  */
 public class download {
     public static final Logger logger = Logger.getLogger(download.class);
-    public static void downloadHttpUrl(String surl, String dir, String fileName)  {
+    public static boolean downloadHttpUrl(String surl, String dir, String fileName)  {
         HttpURLConnection conn = null;
         OutputStream oputstream = null;
         InputStream iputstream = null;
@@ -46,15 +46,16 @@ public class download {
            progress_bar.downloaded=c;
             progress_bar.downloadedA=progress_bar.getPrintSize(c);
         }
-        System.out.println(c);
+        //System.out.println(c);
         //  输出完成后刷新并关闭流
 
 
     } catch (Exception e) {
-            //JOptionPane.showMessageDialog(INIT.alwaysOnTop, "获取版本号失败", "错误", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            //logger.error("获取版本号失败");
-            System.exit(1);
+
+            logger.error(e);
+            return false;
+
+
     } finally {
         try {
             //  重要且易忽略步骤 (关闭流,切记!)
@@ -73,7 +74,7 @@ public class download {
         }
         }
         //  输出完成后刷新并关闭流
-
+return true;
     }
 
     public static long getFileSize(String stringUrl) throws IOException {
@@ -83,8 +84,10 @@ public class download {
         long size = conn.getContentLength();
         if (size < 0) {
             System.out.println("无法获取文件大小。");
+            logger.error("无法获取文件大小。");
         } else {
             System.out.println("文件大小为：" + size + " bytes");
+            logger.info("需下载的文件大小为："+ size + " bytes");
             return size;
         }
         conn.getInputStream().close();
